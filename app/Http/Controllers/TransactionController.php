@@ -142,36 +142,70 @@ class TransactionController extends Controller
         }
     }
 
-    public function showTransactions(): JsonResponse
+    public function showTransactions(Request $request): JsonResponse
     {
         try {
-            $transactions = Transaction::orderBy('date', 'desc')
-                ->where('user_id', Auth::id())
-                ->get();
+
+            $transactions = Transaction::query();
+
+            if ($request->has('type')) {
+                $transactions->where([
+                                'user_id' => Auth::id(), 
+                                'type_id' => $request->input('type')])
+                             ->orderBy('date', 'desc');
+            }
+
+            if ($request->has('category')) {
+                $transactions->where([
+                                'user_id' => Auth::id(), 
+                                'category_id' => $request->input('category')])
+                             ->orderBy('date', 'desc');
+            }
+
+            if ($request->has('card')) {
+                $transactions->where([
+                                'user_id' => Auth::id(), 
+                                'card_id' => $request->input('card')])
+                             ->orderBy('date', 'desc');
+            }
+
+            $result = $transactions->get();
+
+            foreach ($result as $transaction) {
+
+                $description = Category::find($transaction->category_id)->category_description;
+                $transaction->category_description = $description;
+            }
 
             $most_expensive_transaction = Transaction::orderBy('transaction_value', 'desc')
-                ->where(['user_id'=> Auth::id(),
+                ->where([
+                    'user_id'=> Auth::id(),
                     'type_id' => 2])
                 ->first()->transaction_value;
 
+            $total_incomes = Transaction::where([
+                'user_id' => Auth::id(),
+                'type_id' => 1
+            ])->get();
+
+            $total_spendings = Transaction::where([
+                'user_id' => Auth::id(),
+                'type_id' => 2
+            ])->get();
+
             $response = [
                 'data' => [
-                    'transactions' => [], 
-                    'most_expensive' => $most_expensive_transaction, 
-                    'total' => count($transactions)
+                    'total_incomes' => count($total_incomes),
+                    'total_spendings' => count($total_spendings),
+                    'most_expensive_transaction' => $most_expensive_transaction,
+                    'transactions' => $result
                 ]
             ];
-
-            foreach($transactions as $transaction) {
-                $description = Category::find($transaction->category_id)->category_description;
-                $transaction->category_description = $description;
-                array_push($response['data']['transactions'], $transaction);
-            }
 
             return response()->json($response, 200);
 
         } catch (\Exception $e) {
-            $errorMessage = 'Nenhuma transação foi encontrada';
+            $errorMessage = 'Nenhuma transação foi encontrada.';
             $response = [
                 "data" => [
                     "message" => $errorMessage,
@@ -192,6 +226,7 @@ class TransactionController extends Controller
             $description = Category::find($transaction->category_id)->category_description;
             $transaction->category_description = $description;
 
+
             $response = [
                 'data' => [
                     'transaction' => $transaction
@@ -210,87 +245,9 @@ class TransactionController extends Controller
             return response()->json($response, 404);
         }
     }
-
-    public function showTransactionsByType($id): JsonResponse
-    {
-        try {
-            
-            $transactions = Transaction::where([
-                'user_id' => Auth::user()->id,
-                'type_id' => $id
-            ])->orderBy('date', 'desc')->get();
-
-            $response = [
-                'data' => [
-                    'transactions' => [], 
-                    'total' => count($transactions)
-                ]
-            ];
-
-            foreach ($transactions  as $transaction) {
-                $description = Category::find($transaction->category_id)->category_description;
-                $transaction->category_description = $description;
-                array_push($response['data']['transactions'], $transaction);
-            }
-
-            return response()->json($response, 200);
-        } catch (\Exception $e) {
-
-            $errorMessage = "Erro: Nenhuma transação encontrada.";
-            $response = [
-                "data" => [
-                    "message" => $errorMessage,
-                    "error" => $e->getMessage()
-                ]
-            ];
-            return response()->json($response, 404);
-        }
-    }
-
-    public function showTransactionsByCard($id): JsonResponse
-    {
-        try {
-
-            $transactions = Transaction::where([
-                'card_id' => $id
-            ])->get();
-
-            $response = ['data' => ['transactions' => []]];
-            foreach ($transactions  as $transaction) {
-                $description = Category::find($transaction->category_id)->category_description;
-                $transaction->category_description = $description;
-                array_push($response['data']['transactions'], $transaction);
-            }
-
-            return response()->json($response, 200);
-        } catch (\Exception $e) {
-            $errorMessage = "Erro: Este cartão não possui transações.";
-            $response = [
-                "data" => [
-                    "message" => $errorMessage,
-                    "error" => $e->getMessage()
-                ]
-            ];
-            return response()->json($response, 404);
-        }
-    }
-
+    
     public function update(Request $request): JsonResponse
     {
-        try {
-            Transaction::findOrFail($request->id);
-        } catch (\Exception $e) {
-
-            $errorMessage = "Essa transação não existe ou já foi excluída.";
-            $response = [
-                "data" => [
-                    "message" => $errorMessage,
-                    "error" => $e->getMessage()
-                ]
-            ];
-            return response()->json($response, 404);
-        }
-
         try {
 
             $request->validate([

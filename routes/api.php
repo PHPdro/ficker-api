@@ -15,14 +15,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::prefix('transaction')->group(function () {
-        Route::get('/income', [TransactionController::class, 'incomes']); // Entradas por ano, mês ou dia
-        Route::get('/all', [TransactionController::class, 'showTransactions']);
-        Route::post('/store', [TransactionController::class, 'store']);
-        Route::get('/type/{id}', [TransactionController::class, 'showTransactionsByType']); // Entradas ou saídas
-        Route::get('/card/{id}', [TransactionController::class, 'showTransactionsByCard']); // Transações de um cartão de crédito
-        Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'showTransactions']);
         Route::get('/{id}', [TransactionController::class, 'showTransaction']);
+        Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
+        Route::post('/', [TransactionController::class, 'store']);
         Route::put('/{id}', [TransactionController::class, 'update']);
         Route::delete('/{id}', [TransactionController::class, 'destroy']);
     });
