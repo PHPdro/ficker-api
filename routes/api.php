@@ -16,22 +16,22 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('transactions')->group(function () {
-        Route::get('/', [TransactionController::class, 'showTransactions']);
-        Route::get('/{id}', [TransactionController::class, 'showTransaction']);
-        Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
         Route::post('/', [TransactionController::class, 'store']);
+        Route::get('/', [TransactionController::class, 'showTransactions']);
         Route::put('/{id}', [TransactionController::class, 'update']);
         Route::delete('/{id}', [TransactionController::class, 'destroy']);
+        Route::get('/{id}', [TransactionController::class, 'showTransaction']);
+        Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
     });
 
     //Rotas das categorias
-    Route::post('/category/store', [CategoryController::class, 'store']);
+    Route::post('/categories', [CategoryController::class, 'store']);
     Route::get('/categories', [CategoryController::class, 'showCategories']);
     Route::get('/categories/{id}', [CategoryController::class, 'showCategory']);
     Route::get('/categories/type/{id}', [CategoryController::class, 'showCategoriesByType']); // Categorias de entrada (1), saída (2) ou cartão de crédito (3)
 
     //Rotas dos cartões
-    Route::post('/card', [CardController::class, 'store']);
+    Route::post('/cards', [CardController::class, 'store']);
     Route::get('/cards', [CardController::class, 'showCards']);
     Route::get('/cards/{id}/invoice', [CardController::class, 'showCardInvoice']);
     Route::get('/cards/{id}/installments', [CardController::class, 'showInvoiceInstallments']); // Transações de um cartão no mês atual
@@ -40,14 +40,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Rotas dos gastos
     Route::get('/spendings', [SpendingController::class, 'spendings']); // Saídas por ano, mês ou dia
     Route::get('/spending', [SpendingController::class, 'showSpending']);
-    Route::post('/spending/store', [SpendingController::class, 'store']);
+    Route::post('/spendings', [SpendingController::class, 'store']);
     Route::put('/spending/update/{id}', [SpendingController::class, 'update']);
 
     //Rotas dos saldos
     Route::get('/balance', [BalanceController::class, 'balance']); //Mostra o saldo atual;
 
     //Rotas dos métodos de pagamento (id e descrição)
-    Route::get('/payment/methods', [PaymentController::class, 'showPaymentMethods']);
+    Route::get('/payment-methods', [PaymentController::class, 'showPaymentMethods']);
 });
 
 require __DIR__ . '/auth.php';

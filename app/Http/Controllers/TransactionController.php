@@ -9,24 +9,15 @@ use App\Models\Transaction;
 use App\Models\Category;
 use App\Models\Card;
 use App\Models\Installment;
+use App\Http\Requests\TransactionRequest;
 
 class TransactionController extends Controller
 {
+    public function store(TransactionRequest $request): JsonResponse
+    {       
+        $validated = $request->validated();
 
-    public function store(Request $request): JsonResponse
-    {
-
-        $request->validate([
-            'transaction_description' => ['required', 'string', 'max:50'],
-            'category_id' => ['required'],
-            'category_description' => ['required_if:category_id,0', 'string', 'max:50'],
-            'date' => ['required', 'date'],
-            'type_id' => ['required', 'min:1', 'max:2'],
-            'transaction_value' => ['required', 'decimal:0,2', 'min:1'],
-            'payment_method_id' => ['required_if:type_id,2', 'prohibited_if:type_id,1'],
-            'installments' => ['required_if:payment_method_id,4', 'prohibited_unless:payment_method_id,4', 'min:1'],
-            'card_id' => ['required_if:payment_method_id,4', 'prohibited_unless:payment_method_id,4']
-        ]);
+        $validated['user_id'] = Auth::id();
 
         // Validando card id
 
@@ -53,25 +44,15 @@ class TransactionController extends Controller
         if ($request->category_id == 0) {
 
             $category = CategoryController::storeInTransaction($request->category_description, $request->type_id);
+            $validated['category_id'] = $category->id;
 
-        } else {
-
-            $category = Category::find($request->category_id);
         }
 
         // Cadastrando transação
 
         if (is_null($request->installments)) { // Entrada e saída sem parcelas
 
-            $transaction = Transaction::create([
-                'user_id' => Auth::user()->id,
-                'category_id' => $category->id,
-                'type_id' => $request->type_id,
-                'payment_method_id' => $request->payment_method_id,
-                'transaction_description' => $request->transaction_description,
-                'date' => $request->date,
-                'transaction_value' => $request->transaction_value,
-            ]);
+            $transaction = Transaction::create($validated);
 
             LevelController::completeMission($request->type_id);
             
@@ -85,27 +66,15 @@ class TransactionController extends Controller
 
         } else { // Saídas de cartão de crédito
 
-            $transaction = Transaction::create([
-                'user_id' => Auth::user()->id,
-                'category_id' => $category->id,
-                'type_id' => $request->type_id,
-                'payment_method_id' => $request->payment_method_id,
-                'card_id' => $request->card_id,
-                'transaction_description' => $request->transaction_description,
-                'date' => $request->date,
-                'transaction_value' => $request->transaction_value,
-                'installments' => $request->installments,
-            ]);
+            $transaction = Transaction::create($validated);
 
             $response = [];
             $pay_day = date('Y-m-d');
             $new_pay_day_formated = $pay_day;
-            $i = $request->installments;
             $value = (float)$request->transaction_value / (float)$request->installments;
             $value = (float) number_format($value, 2, '.', '');
-            $firstInstallment = $request->transaction_value - ($value * ($i - 1));
+            $firstInstallment = $request->transaction_value - ($value * ($request->installments - 1));
             $firstInstallment =  (float) number_format($firstInstallment, 2, '.', '');
-
 
             for ($i = 1; $i <= $request->installments; $i++) {
 
@@ -151,21 +120,28 @@ class TransactionController extends Controller
             if ($request->has('type')) {
                 $transactions->where([
                                 'user_id' => Auth::id(), 
-                                'type_id' => $request->input('type')])
+                                'type_id' => $request->query('type')])
                              ->orderBy('date', 'desc');
             }
 
             if ($request->has('category')) {
                 $transactions->where([
                                 'user_id' => Auth::id(), 
-                                'category_id' => $request->input('category')])
+                                'category_id' => $request->query('category')])
                              ->orderBy('date', 'desc');
             }
 
             if ($request->has('card')) {
                 $transactions->where([
                                 'user_id' => Auth::id(), 
-                                'card_id' => $request->input('card')])
+                                'card_id' => $request->query('card')])
+                             ->orderBy('date', 'desc');
+            }
+
+            if ($request->has('payment-method')) {
+                $transactions->where([
+                                'user_id' => Auth::id(), 
+                                'payment_method_id' => $request->query('pqyment-method')])
                              ->orderBy('date', 'desc');
             }
 
@@ -245,7 +221,7 @@ class TransactionController extends Controller
             return response()->json($response, 404);
         }
     }
-    
+
     public function update(Request $request): JsonResponse
     {
         try {
