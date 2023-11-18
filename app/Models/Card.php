@@ -33,4 +33,9 @@ class Card extends Model
     {
         return $this->belongsTo(Flag::class);
     }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

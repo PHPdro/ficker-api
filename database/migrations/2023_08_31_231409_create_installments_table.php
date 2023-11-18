@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Transaction;
 use App\Models\Card;
+use App\Models\Invoice;
 
 return new class extends Migration
 {
@@ -16,10 +17,10 @@ return new class extends Migration
         Schema::create('installments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Transaction::class)->onDelete('cascade');
+            $table->foreignIdFor(Invoice::class)->onDelete('cascade');
             $table->foreignIdFor(Card::class)->nullable()->onDelete('cascade');
             $table->string('installment_description');
             $table->double('installment_value');
-            $table->date('pay_day');
             $table->timestamps();
         });
     }
