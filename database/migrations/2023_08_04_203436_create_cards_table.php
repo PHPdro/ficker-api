@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->foreignIdFor(Flag::class)->onDelete('cascade');
             $table->string('card_description');
-            $table->integer('expiration');
-            $table->integer('closure');
+            $table->integer('card_expiration');
+            $table->integer('card_closure');
             $table->timestamps();
         });
     }
