@@ -15,47 +15,32 @@ class TransactionController extends Controller
 {
     public function store(TransactionRequest $request): JsonResponse
     {       
-        $validated = $request->validated();
+        try {
 
-        $validated['user_id'] = Auth::id();
+            $validated = $request->validated();
 
-        // Validando card id
+            $validated['user_id'] = Auth::id();
 
-        if ($request->payment_method_id == 4) {
+            // Cadastrando nova categoria
 
-            try {
+            if ($request->category_id == 0) {
 
-                Card::findOrFail($request->card_id);
-            } catch (\Exception $e) {
-                $errorMessage = "Error: Cartão não encontrado.";
-                $response = [
-                    "data" => [
-                        "message" => $errorMessage,
-                        "error" => $e
-                    ]
-                ];
+                $category = CategoryController::storeInTransaction($request->category_description, $request->type_id);
+                $validated['category_id'] = $category->id;
 
-                return response()->json($response, 404);
             }
-        }
 
-        // Cadastrando nova categoria
-
-        if ($request->category_id == 0) {
-
-            $category = CategoryController::storeInTransaction($request->category_description, $request->type_id);
-            $validated['category_id'] = $category->id;
-
-        }
-
-        // Cadastrando transação
-
-        if (is_null($request->installments)) { // Entrada e saída sem parcelas
+            // Cadastrando transação
 
             $transaction = Transaction::create($validated);
 
             LevelController::completeMission($request->type_id);
-            
+
+            if (!is_null($request->installments)) {         
+
+                // Chamar método de cadastro de parcelas/fatura
+            }
+
             $response = [
                 'data' => [
                     'trasanction' => $transaction
@@ -64,50 +49,16 @@ class TransactionController extends Controller
 
             return response()->json($response, 201);
 
-        } else { // Saídas de cartão de crédito
+        } catch(\Exception $e) {
+            $errorMessage = 'Transação não cadastrada.';
+            $response = [
+                "data" => [
+                    "message" => $errorMessage,
+                    "error" => $e
+                ]
+            ];
 
-            $transaction = Transaction::create($validated);
-
-            $response = [];
-            $pay_day = date('Y-m-d');
-            $new_pay_day_formated = $pay_day;
-            $value = (float)$request->transaction_value / (float)$request->installments;
-            $value = (float) number_format($value, 2, '.', '');
-            $firstInstallment = $request->transaction_value - ($value * ($request->installments - 1));
-            $firstInstallment =  (float) number_format($firstInstallment, 2, '.', '');
-
-            for ($i = 1; $i <= $request->installments; $i++) {
-
-                if ($i == 1) {
-                    $installment = Installment::create([
-                        'transaction_id' => $transaction->id,
-                        'installment_description' => $request->transaction_description . ' ' . $i . '/' . $request->installments,
-                        'installment_value' => $firstInstallment,
-                        'card_id' => $request->card_id,
-                        'pay_day' => $pay_day
-                    ]);
-
-                    array_push($response, $installment);
-                } else {
-                    $new_pay_day = strtotime('+1 months', strtotime($pay_day));
-                    $new_pay_day_formated = date('Y-m-d', $new_pay_day);
-                    $installment = Installment::create([
-                        'transaction_id' => $transaction->id,
-                        'installment_description' => $request->transaction_description . ' ' . $i . '/' . $request->installments,
-                        'installment_value' => $value,
-                        'card_id' => $request->card_id,
-                        'pay_day' => $new_pay_day_formated
-                    ]);
-
-                    array_push($response, $installment);
-                }
-
-                $pay_day = $new_pay_day_formated;
-            }
-
-            LevelController::completeMission(4);
-
-            return response()->json($response, 200);
+            return response()->json($response, 404);
         }
     }
 

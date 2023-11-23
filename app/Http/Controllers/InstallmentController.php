@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Installment;
 
-
 class InstallmentController extends Controller
 {
+
+    public function store(): JsonResponse
+    {
+        
+    }
     public function showInstallments($id): JsonResponse
     {
         try {
