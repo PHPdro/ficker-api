@@ -7,14 +7,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
 use App\Models\Category;
-use App\Models\Card;
 use App\Models\Installment;
 use App\Http\Requests\TransactionRequest;
+use App\Services\TransactionService;
 
 class TransactionController extends Controller
 {
     public function store(TransactionRequest $request): JsonResponse
-    {       
+    {
         try {
 
             $validated = $request->validated();
@@ -27,14 +27,11 @@ class TransactionController extends Controller
 
                 $category = CategoryController::storeInTransaction($request->category_description, $request->type_id);
                 $validated['category_id'] = $category->id;
-
             }
 
             // Cadastrando transação
 
             $transaction = Transaction::create($validated);
-
-            LevelController::completeMission($request->type_id);
 
             if (!is_null($request->installments)) {         
 
