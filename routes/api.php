@@ -17,10 +17,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('transactions')->group(function () {
         Route::post('/', [TransactionController::class, 'store']);
-        Route::get('/', [TransactionController::class, 'showTransactions']);
+        Route::get('/{id}', [TransactionController::class, 'show']);
         Route::put('/{id}', [TransactionController::class, 'update']);
         Route::delete('/{id}', [TransactionController::class, 'destroy']);
-        Route::get('/{id}', [TransactionController::class, 'showTransaction']);
+        // Route::get('/{id}', [TransactionController::class, 'showTransaction']);
         Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
     });
 

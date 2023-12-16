@@ -26,8 +26,6 @@ class CategoryController extends Controller
                 ]
             ];
 
-            LevelController::completeMission(5);
-
             return response()->json($response, 201);
 
         } catch (\Exception $e) {
