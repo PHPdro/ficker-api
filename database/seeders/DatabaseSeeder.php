@@ -17,63 +17,63 @@ class DatabaseSeeder extends Seeder
     {
         // Níveis de usuário
 
-        $levels = [
-            [
-                'level_description' => 'Padawan',
-                'level_xp' => 0
-            ],
-            [
-                'level_description' => 'Ficker Knight',
-                'level_xp' => 125
-            ],
-            [
-                'level_description' => 'Ficker Master',
-                'level_xp' => 250
-            ],
-            [
-                'level_description' => 'Ficker Grand Master',
-                'level_xp' => 500
-            ],
-        ];
+        // $levels = [
+        //     [
+        //         'level_description' => 'Padawan',
+        //         'level_xp' => 0
+        //     ],
+        //     [
+        //         'level_description' => 'Ficker Knight',
+        //         'level_xp' => 125
+        //     ],
+        //     [
+        //         'level_description' => 'Ficker Master',
+        //         'level_xp' => 250
+        //     ],
+        //     [
+        //         'level_description' => 'Ficker Grand Master',
+        //         'level_xp' => 500
+        //     ],
+        // ];
 
-        collect($levels)->each( function($level) {
+        // collect($levels)->each( function($level) {
 
-            \App\Models\Level::factory()->create($level);
+        //     \App\Models\Level::factory()->create($level);
 
-        });
+        // });
 
-        $missions = [
-            [
-                'mission_description' => 'Adicionar transação de entrada',
-                'mission_xp' => 25
-            ],
-            [
-                'mission_description' => 'Adicionar transação de saída',
-                'mission_xp' => 25
-            ],
-            [
-                'mission_description' => 'Adicionar cartão de crédito',
-                'mission_xp' => 25
-            ],
-            [
-                'mission_description' => 'Adicionar transação de cartão de crédito',
-                'mission_xp' => 25
-            ],
-            [
-                'mission_description' => 'Criar nova categoria',
-                'mission_xp' => 25
-            ],
-            [
-                'mission_description' => 'Finalizar um mês com orçamento dentro do gasto planejado',
-                'mission_xp' => 100
-            ],
-        ];
+        // $missions = [
+        //     [
+        //         'mission_description' => 'Adicionar transação de entrada',
+        //         'mission_xp' => 25
+        //     ],
+        //     [
+        //         'mission_description' => 'Adicionar transação de saída',
+        //         'mission_xp' => 25
+        //     ],
+        //     [
+        //         'mission_description' => 'Adicionar cartão de crédito',
+        //         'mission_xp' => 25
+        //     ],
+        //     [
+        //         'mission_description' => 'Adicionar transação de cartão de crédito',
+        //         'mission_xp' => 25
+        //     ],
+        //     [
+        //         'mission_description' => 'Criar nova categoria',
+        //         'mission_xp' => 25
+        //     ],
+        //     [
+        //         'mission_description' => 'Finalizar um mês com orçamento dentro do gasto planejado',
+        //         'mission_xp' => 100
+        //     ],
+        // ];
 
-        collect($missions)->each( function($mission) {
+        // collect($missions)->each( function($mission) {
 
-            \App\Models\Mission::factory()->create($mission);
+        //     \App\Models\Mission::factory()->create($mission);
 
-        });
+        // });
 
         //Usuário
 
@@ -143,7 +143,7 @@ class DatabaseSeeder extends Seeder
 
         // Cartão de crédito
 
-        $card = Card::factory()->create();
+        // $card = Card::factory()->create();
 
         // Categorias
 

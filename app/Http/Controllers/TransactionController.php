@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
-use App\Models\Category;
 use App\Models\Installment;
 use App\Http\Requests\TransactionRequest;
 use App\Services\TransactionService;
@@ -16,123 +15,14 @@ class TransactionController extends Controller
     public function store(TransactionRequest $request): JsonResponse
     {
         try {
+            $transaction = (new TransactionService())->storeTransaction($request->validated());
 
-            $validated = $request->validated();
-
-            $validated['user_id'] = Auth::id();
-
-            // Cadastrando nova categoria
-
-            if ($request->category_id == 0) {
-
-                $category = CategoryController::storeInTransaction($request->category_description, $request->type_id);
-                $validated['category_id'] = $category->id;
-            }
-
-            // Cadastrando transação
-
-            $transaction = Transaction::create($validated);
-
-            if (!is_null($request->installments)) {         
-
-                // Chamar método de cadastro de parcelas/fatura
-            }
-
-            $response = [
-                'data' => [
-                    'trasanction' => $transaction
-                ]
-            ];
-
-            return response()->json($response, 201);
+            return response()->json($transaction, 201);
 
         } catch(\Exception $e) {
-            $errorMessage = 'Transação não cadastrada.';
             $response = [
                 "data" => [
-                    "message" => $errorMessage,
-                    "error" => $e
-                ]
-            ];
-
-            return response()->json($response, 404);
-        }
-    }
-
-    public function showTransactions(Request $request): JsonResponse
-    {
-        try {
-
-            $transactions = Transaction::query();
-
-            if ($request->has('type')) {
-                $transactions->where([
-                                'user_id' => Auth::id(), 
-                                'type_id' => $request->query('type')])
-                             ->orderBy('date', 'desc');
-            }
-
-            if ($request->has('category')) {
-                $transactions->where([
-                                'user_id' => Auth::id(), 
-                                'category_id' => $request->query('category')])
-                             ->orderBy('date', 'desc');
-            }
-
-            if ($request->has('card')) {
-                $transactions->where([
-                                'user_id' => Auth::id(), 
-                                'card_id' => $request->query('card')])
-                             ->orderBy('date', 'desc');
-            }
-
-            if ($request->has('payment-method')) {
-                $transactions->where([
-                                'user_id' => Auth::id(), 
-                                'payment_method_id' => $request->query('pqyment-method')])
-                             ->orderBy('date', 'desc');
-            }
-
-            $result = $transactions->get();
-
-            foreach ($result as $transaction) {
-
-                $description = Category::find($transaction->category_id)->category_description;
-                $transaction->category_description = $description;
-            }
-
-            $most_expensive_transaction = Transaction::orderBy('transaction_value', 'desc')
-                ->where([
-                    'user_id'=> Auth::id(),
-                    'type_id' => 2])
-                ->first()->transaction_value;
-
-            $total_incomes = Transaction::where([
-                'user_id' => Auth::id(),
-                'type_id' => 1
-            ])->get();
-
-            $total_spendings = Transaction::where([
-                'user_id' => Auth::id(),
-                'type_id' => 2
-            ])->get();
-
-            $response = [
-                'data' => [
-                    'total_incomes' => count($total_incomes),
-                    'total_spendings' => count($total_spendings),
-                    'most_expensive_transaction' => $most_expensive_transaction,
-                    'transactions' => $result
-                ]
-            ];
-
-            return response()->json($response, 200);
-
-        } catch (\Exception $e) {
-            $errorMessage = 'Nenhuma transação foi encontrada.';
-            $response = [
-                "data" => [
-                    "message" => $errorMessage,
+                    "message" => 'Transação não cadastrada.',
                     "error" => $e->getMessage()
                 ]
             ];
@@ -141,31 +31,23 @@ class TransactionController extends Controller
         }
     }
 
-    public function showTransaction($id): JsonResponse
-    {
+    public function show(Request $request): JsonResponse
+    {        
         try {
+            $data = $request->toArray();
+            $data['id'] = $request->id;
+            $transaction = (new TransactionService())->getTransactions($data);
 
-            $transaction = Transaction::find($id);
+            return response()->json($transaction, 200);
 
-            $description = Category::find($transaction->category_id)->category_description;
-            $transaction->category_description = $description;
-
-
-            $response = [
-                'data' => [
-                    'transaction' => $transaction
-                ]
-            ];
-
-            return response()->json($response, 200);
         } catch (\Exception $e) {
-            $errorMessage = "Erro: Transação não encontrada.";
             $response = [
                 "data" => [
-                    "message" => $errorMessage,
+                    "message" => 'Nenhuma transação foi encontrada.',
                     "error" => $e->getMessage()
                 ]
             ];
+
             return response()->json($response, 404);
         }
     }
@@ -305,5 +187,4 @@ class TransactionController extends Controller
             return response()->json($response, 404);
         }
     }
-
 }
