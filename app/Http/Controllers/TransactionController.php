@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateTransactionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
-use App\Models\Installment;
-use App\Http\Requests\TransactionRequest;
+use App\Http\Requests\StoreTransactionRequest;
 use App\Services\TransactionService;
 
 class TransactionController extends Controller
 {
-    public function store(TransactionRequest $request): JsonResponse
+    public function store(StoreTransactionRequest $request): JsonResponse
     {
         try {
             $transaction = (new TransactionService())->storeTransaction($request->validated());
@@ -52,103 +51,14 @@ class TransactionController extends Controller
         }
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(UpdateTransactionRequest $request): JsonResponse
     {
         try {
+            $data = $request->validated();
+            $data['id'] = $request->id;
+            $transaction = (new TransactionService())->update($data);
 
-            $request->validate([
-                'transaction_description' => ['string', 'max:50'],
-                'date' => ['date'],
-                'transaction_value' => ['decimal:0,2', 'min:1'],
-                'payment_method_id' => ['min:1', 'max:4'],
-                'installments' => ['min:1'],
-            ]);
-
-            Transaction::find($request->id)->update($request->only([
-                'transaction_description',
-                'category_id',
-                'date',
-                'transaction_value',
-                'payment_method_id',
-                'installments'
-            ]));
-
-            $transaction = Transaction::find($request->id);
-
-            if($transaction->payment_method_id == 4) {
-
-                if(!(is_null($request->installments))) {
-
-                    $installments = Installment::where('transaction_id', $request->id)->get();
-                    $transaction = Transaction::find($request->id);
-
-                    Installment::where('transaction_id', $request->id)->delete();
-                    $date = $transaction->date;
-                    for ($i = 1; $i <= $request->installments; $i++) {
-
-                        Installment::create([
-                            'transaction_id' => $request->id,
-                            'installment_description' => $transaction->transaction_description.' '.$i.'/'.$request->installments,
-                            'installment_value' => $transaction->transaction_value / $request->installments,
-                            'card_id' => $transaction->card_id,
-                            'pay_day' => $date
-                        ]);
-
-                        $date = strtotime('+1 months', strtotime($date));
-                        $date = date('Y-m-d', $date);
-                    }
-                }
-
-                if(!(is_null($request->transaction_value))) {
-
-                    Installment::where('transaction_id', $request->id)->get()->each(function($installment) use ($request) {
-                        
-                        $transaction = Transaction::find($request->id);
-    
-                        $installment->update([
-                            'installment_value' => $request->transaction_value / $transaction->installments
-                        ]);
-                    });
-                }
-
-                if(!(is_null($request->transaction_description))) {
-
-                    $count = 1;
-                    Installment::where('transaction_id', $request->id)->get()->each(function($installment) use ($request, &$count){
-
-                        $transaction = Transaction::find($request->id);
-    
-                        $installment->update([
-                            'installment_description' => $request->transaction_description.' '.$count.'/'.$transaction->installments,
-                        ]);
-
-                        $count++;
-                    });
-                }
-
-                if(!(is_null($request->date))) {
-
-                    $date = $request->date;
-                    Installment::where('transaction_id', $request->id)->get()->each(function($installment) use (&$date){
-    
-                        $installment->update([
-                            'pay_day' => $date,
-                        ]);
-
-                        $date = strtotime('+1 months', strtotime($date));
-                        $date = date('Y-m-d', $date);
-                    });
-                }
-            }
-
-            $installments = Installment::where('transaction_id', $request->id)->get();
-
-            $response = [
-                "transaction" => $transaction,
-                "installments" => $installments
-            ];
-
-            return response()->json($response, 200);
+            return response()->json($transaction, 200);
 
         } catch (\Exception $e) {
 

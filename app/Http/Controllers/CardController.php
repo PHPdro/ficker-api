@@ -16,24 +16,22 @@ class CardController extends Controller
         $request->validate([
             'card_description' => ['required', 'string', 'min:2', 'max:50'],
             'flag_id' => ['required'],
-            'expiration' => ['required', 'integer', 'min:1', 'max:31'],
-            'closure' => ['required', 'integer', 'min:1', 'max:31']
+            'card_expiration' => ['required', 'integer', 'min:1', 'max:31'],
+            'card_closure' => ['required', 'integer', 'min:1', 'max:31']
         ]);
 
 
         $card = Card::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'flag_id' => $request->flag_id,
             'card_description' => $request->card_description,
-            'expiration' => $request->expiration,
-            'closure' => $request->closure
+            'card_expiration' => $request->expiration,
+            'card_closure' => $request->closure
         ]);
-
-        LevelController::completeMission(3);
 
         $response = [
             'card' => $card
-        ];
+        ]; 
 
         return response()->json($response, 201);
     }

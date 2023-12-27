@@ -14,7 +14,6 @@ class Installment extends Model
         'transaction_id',
         'installment_description',
         'installment_value',
-        'pay_day',
         'card_id'
     ];
 
