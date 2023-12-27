@@ -20,8 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{id}', [TransactionController::class, 'show']);
         Route::put('/{id}', [TransactionController::class, 'update']);
         Route::delete('/{id}', [TransactionController::class, 'destroy']);
-        // Route::get('/{id}', [TransactionController::class, 'showTransaction']);
-        Route::get('/{id}/installments', [InstallmentController::class, 'showInstallments']); // Parcelas de uma transação
+        Route::get('/{id}/installments', [InstallmentController::class, 'show']); // Parcelas de uma transação
     });
 
     //Rotas das categorias

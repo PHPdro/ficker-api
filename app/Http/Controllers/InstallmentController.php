@@ -25,7 +25,7 @@ class InstallmentController extends Controller
         }
     }
     
-    public function showInstallments($id): JsonResponse
+    public function show($id): JsonResponse
     {
         try {
 

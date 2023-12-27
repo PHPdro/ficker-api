@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Models\Category;
+use App\Models\Installment;
 use App\Services\CategoryService;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,23 @@ class TransactionService {
         }
 
         $transaction = Transaction::create($data);
+
+        if($transaction->payment_method_id == 4) {
+
+            $date = $transaction->date;
+            for ($i = 1; $i <= $data['installments']; $i++) {
+
+                Installment::create([
+                    'transaction_id' => $transaction->id,
+                    'installment_description' => $transaction->transaction_description.' '.$i.'/'.$data['installments'],
+                    'installment_value' => $transaction->transaction_value / $data['installments'],
+                    'card_id' => $transaction->card_id,
+                ]);
+
+                $date = strtotime('+1 months', strtotime($date));
+                $date = date('Y-m-d', $date);
+            }
+        }
 
         $response = [
             'data' => [
@@ -105,6 +123,88 @@ class TransactionService {
                 ]
             ];
         }
+
+        return $response;
+    }
+
+    public function update(array $data): array
+    {
+        Transaction::find($data['id'])->update($data);
+
+        $transaction = Transaction::find($data['id']);
+
+            if($transaction->payment_method_id == 4) {
+
+                if(array_key_exists('installments', $data)) {
+
+                    $installments = Installment::where('transaction_id', $data['id'])->get();
+                    $transaction = Transaction::find($data['id']);
+
+                    Installment::where('transaction_id', $data['id'])->delete();
+                    $date = $transaction->date;
+                    for ($i = 1; $i <= $data['installments']; $i++) {
+
+                        Installment::create([
+                            'transaction_id' => $data['id'],
+                            'installment_description' => $transaction->transaction_description.' '.$i.'/'.$data['installments'],
+                            'installment_value' => $transaction->transaction_value / $data['installments'],
+                            'card_id' => $transaction->card_id,
+                            'pay_day' => $date
+                        ]);
+
+                        $date = strtotime('+1 months', strtotime($date));
+                        $date = date('Y-m-d', $date);
+                    }
+                }
+
+                if(array_key_exists('transaction_value', $data)) {
+
+                    Installment::where('transaction_id', $data['id'])->get()->each(function($installment) use ($data) {
+                        
+                        $transaction = Transaction::find($data['id']);
+    
+                        $installment->update([
+                            'installment_value' => $data['transaction_value'] / $transaction->installments
+                        ]);
+                    });
+                }
+
+                if(array_key_exists('transaction_description', $data)) {
+
+                    $count = 1;
+                    Installment::where('transaction_id', $data['id'])->get()->each(function($installment) use ($data, &$count){
+
+                        $transaction = Transaction::find($data['id']);
+    
+                        $installment->update([
+                            'installment_description' => $data['transaction_description'].' '.$count.'/'.$transaction->installments,
+                        ]);
+
+                        $count++;
+                    });
+                }
+
+                if(array_key_exists('date', $data)) {
+
+                    $date = $data['date'];
+                    Installment::where('transaction_id', $data['id'])->get()->each(function($installment) use (&$date){
+    
+                        $installment->update([
+                            'pay_day' => $date,
+                        ]);
+
+                        $date = strtotime('+1 months', strtotime($date));
+                        $date = date('Y-m-d', $date);
+                    });
+                }
+            }
+
+            $installments = Installment::where('transaction_id', $data['id'])->get();
+
+            $response = [
+                "transaction" => $transaction,
+                "installments" => $installments
+            ];
 
         return $response;
     }
