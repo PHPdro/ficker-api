@@ -9,7 +9,7 @@ networks:
 services:
   laravel:
     #nome do container definido usando o valor da variável
-    container_name: laravel-php8.1
+    container_name: ficker_laravel
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
@@ -41,8 +41,8 @@ services:
       # - traefik.http.routers.laravel-rtr.middlewares=basic-auth@file
 
   mysql:
-    container_name: mysql
-    image: mysql:5.7
+    container_name: ficker_mysql
+    image: mysql:latest
     ports:
       - 3306:3306
     volumes:
@@ -59,8 +59,8 @@ services:
 
   ############ phpmyadmim ############
   phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
+    container_name: ficker_phpmyadmin
+    image: phpmyadmin:latest
     environment:
       - MYSQL_ROOT_PASSWORD=ficker
       - PMA_HOST=mysql
