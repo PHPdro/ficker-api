@@ -22,11 +22,11 @@ class UpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transaction_description' => ['string', 'max:50'],
-            'date' => ['date'],
-            'transaction_value' => ['decimal:0,2', 'min:1'],
-            'payment_method_id' => ['min:1', 'max:4'],
-            'installments' => ['min:1'],
+            'transaction_description' => 'string' | 'max:50',
+            'date' => 'date',
+            'transaction_value' => 'decimal:0,2' | 'min:1',
+            'payment_method_id' => 'min:1' | 'max:4',
+            'installments' => 'min:1'
         ];
     }
 }
