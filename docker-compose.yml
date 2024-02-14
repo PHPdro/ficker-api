@@ -24,7 +24,7 @@ services:
     #seção onde é definida a montagem bind para o volume da aplicação em desenvolvimento
     #Necessário mapear diretório do host que contém a aplicação a ser desenvolvida
     volumes:
-      - /home/phpdro/Documents/projects/api-ficker:/app
+      - /home/phpdro/Documents/projects/ficker-api:/app
     environment:
       - APP_ENV=local
     labels:
