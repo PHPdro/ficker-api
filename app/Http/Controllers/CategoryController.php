@@ -7,60 +7,24 @@ use Illuminate\Http\JsonResponse;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use App\Services\CategoryService;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
 
-    public function store(Request $request): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         try {
-            $category = Category::create([
-                'user_id' => Auth::user()->id,
-                'category_description' => $request->category_description,
-                'type_id' => $request->type_id
-            ]);
+            $category = (new CategoryService())->storeCategory($request->validated());
 
-            $response = [
-                'data' => [
-                    'category' => $category
-                ]
-            ];
-
-            return response()->json($response, 201);
+            return response()->json($category, 201);
 
         } catch (\Exception $e) {
-            $errorMessage = "A categoria não foi criada";
+            $errorMessage = "Os dados informados são inválidos.";
             $response = [
-                'Error' => [
-                    'message' => $errorMessage,
-                    'error' => $e->getMessage()
-                ]
-            ];
-
-            return response()->json($response, 404);
-        }
-    }
-
-    public static function storeInTransaction($description, $type)
-    {
-        try {
-            $category = Category::create([
-                'user_id' => Auth::user()->id,
-                'category_description' => $description,
-                'type_id' => $type
-            ]);
-
-            LevelController::completeMission(5);
-            
-            return $category;
-
-        } catch (\Exception $e) {
-            $errorMessage = "A categoria não foi criada";
-            $response = [
-                'Error' => [
-                    'message' => $errorMessage,
-                    'error' => $e->getMessage()
-                ]
+                'message' => $errorMessage,
+                'errors' => $e->getMessage()
             ];
 
             return response()->json($response, 404);
