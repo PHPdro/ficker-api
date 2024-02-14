@@ -15,7 +15,7 @@ class TransactionService {
         $data['user_id'] = Auth::id();
 
         if ($data['category_id'] == 0) {
-            $category = (new CategoryService())->newCategory($data['category_description'], $data['type_id']);
+            $category = (new CategoryService())->storeCategory($data);
             $data['category_id'] = $category->id;
         }
 
