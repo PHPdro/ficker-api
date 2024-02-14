@@ -22,7 +22,7 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_description' => 'required' |'string' | 'max:50',
+            'category_description' => 'required | string | max:50',
             'type_id' => 'required'
         ];
     }
