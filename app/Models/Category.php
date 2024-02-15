@@ -11,6 +11,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'category_description',
