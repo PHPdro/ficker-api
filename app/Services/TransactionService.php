@@ -49,9 +49,10 @@ class TransactionService {
 
     public function getTransactions(array $data): array
     {
-        $transactions = Transaction::query();
-
+        
         if($data['id'] == 0) {
+
+            $transactions = Transaction::query();
 
             if (array_key_exists('type', $data)) {
                 $transactions->where([
@@ -113,6 +114,7 @@ class TransactionService {
                     'transactions' => $result
                 ]
             ];
+
         } else {
 
             $transaction = Transaction::findOrFail($data['id']);

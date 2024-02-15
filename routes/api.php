@@ -15,6 +15,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
     Route::prefix('transactions')->group(function () {
         Route::post('/', [TransactionController::class, 'store']);
         Route::get('/{id}', [TransactionController::class, 'show']);
@@ -23,18 +24,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{id}/installments', [InstallmentController::class, 'show']); // Parcelas de uma transação
     });
 
-    //Rotas das categorias
-    Route::post('/categories', [CategoryController::class, 'store']);
-    Route::get('/categories', [CategoryController::class, 'showCategories']);
-    Route::get('/categories/{id}', [CategoryController::class, 'showCategory']);
-    Route::get('/categories/type/{id}', [CategoryController::class, 'showCategoriesByType']); // Categorias de entrada (1), saída (2) ou cartão de crédito (3)
+    Route::prefix('categories')->group(function () {
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::get('/{id}', [CategoryController::class, 'show']);
+    });    
 
-    //Rotas dos cartões
-    Route::post('/cards', [CardController::class, 'store']);
-    Route::get('/cards', [CardController::class, 'showCards']);
-    Route::get('/cards/{id}/invoice', [CardController::class, 'showCardInvoice']);
-    Route::get('/cards/{id}/installments', [CardController::class, 'showInvoiceInstallments']); // Transações de um cartão no mês atual
-    Route::get('/flags', [CardController::class, 'showFlags']);
+    Route::prefix('cards')->group(function () {
+        Route::post('/', [CardController::class, 'store']);
+        Route::get('/', [CardController::class, 'showCards']);
+        Route::get('/{id}/invoice', [CardController::class, 'showCardInvoice']);
+        Route::get('/{id}/installments', [CardController::class, 'showInvoiceInstallments']); // Transações de um cartão no mês atual
+        Route::get('/flags', [CardController::class, 'showFlags']);
+    });
 
     //Rotas dos gastos
     Route::get('/spendings', [SpendingController::class, 'spendings']); // Saídas por ano, mês ou dia

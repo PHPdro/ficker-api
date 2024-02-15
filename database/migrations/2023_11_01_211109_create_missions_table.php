@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('mission_description');
             $table->integer('mission_xp');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

@@ -10,6 +10,8 @@ class Type extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'type_description'
     ];

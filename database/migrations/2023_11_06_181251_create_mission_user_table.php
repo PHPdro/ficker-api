@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('mission_user', function (Blueprint $table) {
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->foreignIdFor(Mission::class)->onDelete('cascade');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

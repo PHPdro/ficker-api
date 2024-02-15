@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('invoice_value');
             $table->date('invoice_expiration');
             $table->date('invoice_closure');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

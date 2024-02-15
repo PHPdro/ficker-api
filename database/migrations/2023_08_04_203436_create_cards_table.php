@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('card_description');
             $table->integer('card_expiration');
             $table->integer('card_closure');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 
