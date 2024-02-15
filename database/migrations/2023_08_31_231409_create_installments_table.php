@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Card::class)->nullable()->onDelete('cascade');
             $table->string('installment_description');
             $table->double('installment_value');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('flags', function (Blueprint $table) {
             $table->id();
             $table->string('flag_description');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

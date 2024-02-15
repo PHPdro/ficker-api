@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('date');
             $table->double('transaction_value');
             $table->integer('installments')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 
