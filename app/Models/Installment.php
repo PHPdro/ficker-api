@@ -16,7 +16,8 @@ class Installment extends Model
         'transaction_id',
         'installment_description',
         'installment_value',
-        'card_id'
+        'card_id',
+        'invoice_id'
     ];
 
     public function transaction(): BelongsTo

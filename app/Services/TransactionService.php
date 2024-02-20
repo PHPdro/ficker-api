@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Transaction;
+use App\Models\Card;
 use App\Models\Category;
 use App\Models\Installment;
 use App\Services\CategoryService;
@@ -22,10 +23,11 @@ class TransactionService {
         $transaction = Transaction::create($data);
         
         if($transaction->payment_method_id == 4) {
-
-            $invoices = (new InvoiceService())->createInvoices($transaction);
-            $installments = (new InstallmentService())->storeInstallments($transaction);
+            Card::findOrFail($transaction->card_id);
+            (new InvoiceService())->createInvoices($transaction);
         }
+
+        $installments = Installment::where('transaction_id', $transaction->id)->get();
 
         $response = [
             'data' => [
