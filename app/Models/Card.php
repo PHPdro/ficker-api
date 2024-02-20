@@ -10,13 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Card extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
         'flag_id',
         'card_description',
-        'expiration',
-        'closure'
+        'card_expiration',
+        'card_closure'
     ];
 
     public function transactions(): HasMany

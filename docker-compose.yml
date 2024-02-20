@@ -15,7 +15,7 @@ services:
     #  dockerfile: ./Dockerfile
     image: gbzzz/laravel-php8.1
     #image: nginxdemos/hello
-    restart: unless-stopped
+    #restart: unless-stopped
     ports:
       - 8080:80
     networks:
@@ -72,7 +72,7 @@ services:
     networks:
       - traefik-public
     #     - interna
-    restart: unless-stopped
+    #restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public

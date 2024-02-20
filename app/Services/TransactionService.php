@@ -20,27 +20,17 @@ class TransactionService {
         }
 
         $transaction = Transaction::create($data);
-
+        
         if($transaction->payment_method_id == 4) {
 
-            $date = $transaction->date;
-            for ($i = 1; $i <= $data['installments']; $i++) {
-
-                Installment::create([
-                    'transaction_id' => $transaction->id,
-                    'installment_description' => $transaction->transaction_description.' '.$i.'/'.$data['installments'],
-                    'installment_value' => $transaction->transaction_value / $data['installments'],
-                    'card_id' => $transaction->card_id,
-                ]);
-
-                $date = strtotime('+1 months', strtotime($date));
-                $date = date('Y-m-d', $date);
-            }
+            $invoices = (new InvoiceService())->createInvoices($transaction);
+            $installments = (new InstallmentService())->storeInstallments($transaction);
         }
 
         $response = [
             'data' => [
-                'trasanction' => $transaction
+                'trasanction' => $transaction,
+                'installments' => $installments
             ]
         ];
 

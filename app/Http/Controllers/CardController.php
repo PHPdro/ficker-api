@@ -25,8 +25,8 @@ class CardController extends Controller
             'user_id' => Auth::id(),
             'flag_id' => $request->flag_id,
             'card_description' => $request->card_description,
-            'card_expiration' => $request->expiration,
-            'card_closure' => $request->closure
+            'card_expiration' => $request->card_expiration,
+            'card_closure' => $request->card_closure
         ]);
 
         $response = [
