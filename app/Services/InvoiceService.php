@@ -19,14 +19,14 @@ class InvoiceService {
 
         if ($current_month == "02" && $card_closure >= 29) {
             $current_invoice_closure = Carbon::now()->endOfMonth()->toDateString();
-        }else {
+        } else {
             $current_invoice_closure = Carbon::now()->format('Y-m-'.$card_closure);
         }
 
         if ($transaction->date > $current_invoice_closure) {
             $invoice_closure = Carbon::parse($current_invoice_closure)->addMonth()->format('Y-m-'.$card_closure);
             $invoice_expiration = Carbon::parse($invoice_closure)->addMonth()->format('Y-m-'.$card_expiration);
-        }else {
+        } else {
             $invoice_closure = $current_invoice_closure;
             $invoice_expiration = Carbon::parse($invoice_closure)->addMonth()->format('Y-m-'.$card_expiration);
         }
@@ -35,15 +35,21 @@ class InvoiceService {
 
             if (Carbon::parse($invoice_expiration)->format('l') == 'Saturday') {
                 $invoice_expiration = Carbon::parse($invoice_expiration)->addDays(2)->toDateString();
-            }elseif (Carbon::parse($invoice_expiration)->format('l') == 'Sunday') {
+            } elseif (Carbon::parse($invoice_expiration)->format('l') == 'Sunday') {
                 $invoice_expiration = Carbon::parse($invoice_expiration)->addDays(1)->toDateString();
             }
 
-            $invoice = Invoice::create([
-                'card_id' => $transaction->card_id,
-                'invoice_closure' => $invoice_closure,
-                'invoice_expiration' => $invoice_expiration
-            ]);
+            $existing_invoice = Invoice::where(['card_id' => $transaction->card_id, 'invoice_closure' => $invoice_closure])->first();
+
+            if (is_null($existing_invoice)) {
+                $invoice = Invoice::create([
+                    'card_id' => $transaction->card_id,
+                    'invoice_closure' => $invoice_closure,
+                    'invoice_expiration' => $invoice_expiration
+                ]);
+            } else {
+                $invoice = $existing_invoice;
+            }
             
             Installment::create([
                 'transaction_id' => $transaction->id,
