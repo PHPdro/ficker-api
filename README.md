@@ -1,10 +1,15 @@
 ## Getting Started
 
-Create the .env file
+1. Create the .env file
 
 ```bash
 cp .env.example .env
 ```
-In the docker-compose.yml, change the laravel container volume to your app directory
 
-![Screenshot of laravel container configuration](/home/Pictures/Screenshots/laravel-config.png "Laravel container configuration")
+2. On the docker-compose.yml, change the laravel container volume to your app directory
+
+3. Run the containers
+
+```bash
+docker compose up -d
+``
