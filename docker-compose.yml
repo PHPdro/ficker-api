@@ -1,87 +1,49 @@
-version: '3.7'
-
-networks:
-  traefik-public:
-    external: true
-#  interna:
-#    external: false
+version: '3.8'
 
 services:
-  laravel:
-    #nome do container definido usando o valor da variável
-    container_name: ficker_laravel
-    #build:
-    #  context: .
-    #  dockerfile: ./Dockerfile
-    image: gbzzz/laravel-php8.1
-    #image: nginxdemos/hello
-    #restart: unless-stopped
-    ports:
-      - 8080:80
-    networks:
-      - traefik-public
-    #     - interna
-    #seção onde é definida a montagem bind para o volume da aplicação em desenvolvimento
-    #Necessário mapear diretório do host que contém a aplicação a ser desenvolvida
-    volumes:
-      - /home/phpdro/Documents/projects/ficker-api:/app
-    environment:
-      - APP_ENV=local
-    labels:
-      - traefik.enable=true
-      - traefik.network=traefik-public
-      #definição da porta de entrada do traefik proxy
-      # - traefik.http.routers.laravel-rtr.entrypoints=websecure
-      #definição da rota via traefik proxy
-      - traefik.http.routers.laravel-rtr.rule=Host(`back.ficker.tech`)
-      - traefik.http.routers.laravel-rtr.tls=true
-      - traefik.http.routers.laravel-rtr.tls.certresolver=letsencrypt
-      #definição do serviço via traefik proxy
-      - traefik.http.services.laravel-svc.loadbalancer.server.port=80
-      # - traefik.http.routers.laravel-rtr.middlewares=basic-auth@file
+    laravel:
+      container_name: ficker_laravel
+      image: gbzzz/laravel-php8.1
+      ports:
+        - 8080:80
+      networks:
+        - ficker
+      volumes:
+        #- /home/phpdro/Documents/projects/ficker-api:/app
+      environment:
+        - APP_ENV=local
+      depends_on:
+        - mysql
 
-  mysql:
-    container_name: ficker_mysql
-    image: mysql:latest
-    ports:
-      - 3306:3306
-    volumes:
-      - './mysql:/var/lib/mysql'
-    networks:
-      - traefik-public
-    #      - interna
-    environment:
-      ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_ROOT_PASSWORD: ficker
-      MYSQL_DATABASE: ficker
-      MYSQL_USER: ficker
-      MYSQL_PASSWORD: ficker
+    mysql:
+      container_name: ficker_mysql
+      image: mysql:latest
+      ports:
+        - 3306:3306
+      volumes:
+        - './mysql:/var/lib/mysql'
+      networks:
+        - ficker
+      environment:
+        ALLOW_EMPTY_PASSWORD: "no"
+        MYSQL_ROOT_PASSWORD: ficker
+        MYSQL_DATABASE: ficker
+        MYSQL_USER: ficker
+        MYSQL_PASSWORD: ficker
 
-  ############ phpmyadmim ############
-  phpmyadmin:
-    container_name: ficker_phpmyadmin
-    image: phpmyadmin:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=ficker
-      - PMA_HOST=mysql
-      - TZ=America/Maceio
-    ports:
-      - '9090:80'
-    depends_on:
-      - mysql
-    networks:
-      - traefik-public
-    #     - interna
-    #restart: unless-stopped
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      ## HTTP Routers
-      # - traefik.http.routers.phpmyadmin-rtr.entrypoints=web
-      - traefik.http.routers.phpmyadmin-rtr.entrypoints=websecure
-      - traefik.http.routers.phpmyadmin-rtr.rule=Host(`phpmyadmin.ficker.tech`)
-      - traefik.http.routers.phpmyadmin-rtr.tls=true
-      - traefik.http.routers.phpmyadmin-rtr.tls.certresolver=letsencrypt
-      ## HTTP Services
-      - traefik.http.services.phpmyadmin-svc.loadbalancer.server.port=80
-      # - traefik.http.routers.phpmyadmim-rtr.middlewares=basic-auth@file
+    phpmyadmin:
+      container_name: ficker_phpmyadmin
+      image: phpmyadmin:latest
+      environment:
+        - MYSQL_ROOT_PASSWORD=ficker
+        - PMA_HOST=mysql
+        - TZ=America/Maceio
+      ports:
+        - '9090:80'
+      depends_on:
+        - mysql
+      networks:
+        - ficker
+
+networks:
+  ficker:
