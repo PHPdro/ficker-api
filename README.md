@@ -8,7 +8,7 @@ cp .env.example .env
 
 2. On the docker-compose.yml, change the laravel container volume to your app directory
 
-![docker-compose config](https://drive.google.com/file/d/1xJ0RSGk7ReOfP_RkAHJHob2oUdiVmWmr/view?usp=sharing)
+![docker-compose config](https://drive.google.com/file/d/1xJ0RSGk7ReOfP_RkAHJHob2oUdiVmWmr/view)
 
 4. Run the containers
 
