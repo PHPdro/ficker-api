@@ -10,7 +10,7 @@ cp .env.example .env
 
 ![docker-compose config](https://github.com/PHPdro/ficker-api/assets/127140332/726ff0b2-27e1-474f-af9a-2765e4081664)
 
-4. Run the containers
+3. Run the containers
 
 ```bash
 docker compose up -d
