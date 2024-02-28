@@ -9,7 +9,7 @@ services:
       networks:
         - ficker
       volumes:
-        #- {Your app directory}:/app
+        #- /home/phpdro/Documents/projects/ficker-api:/app
       environment:
         - APP_ENV=local
       depends_on:
