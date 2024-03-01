@@ -15,39 +15,39 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public static function login(): void
-    {
-        $user = User::factory()->create();
-        Auth::login($user);
-    }
+    // public static function login(): void
+    // {
+    //     $user = User::factory()->create();
+    //     Auth::login($user);
+    // }
 
-    public static function transactionStoreTestSetup($type, $payment_method): void
-    {
-        Self::login();
+    // public static function transactionStoreTestSetup($type, $payment_method): void
+    // {
+    //     Self::login();
         
-        Type::factory()->create([
-            'id' => $type,
-        ]);
-        Category::factory()->create([
-            'id' => 1
-        ]);
-        PaymentMethod::factory()->create([
-            'id' => $payment_method,
-        ]);
-        Card::factory()->create([
-            'id' => 1
-        ]);
-    }
+        // Type::factory()->create([
+        //     'id' => $type,
+        // ]);
+        // Category::factory()->create([
+        //     'id' => 1
+        // ]);
+        // PaymentMethod::factory()->create([
+        //     'id' => $payment_method,
+        // ]);
+        // Card::factory()->create([
+        //     'id' => 1
+        // ]);
+    // }
 
-    public static function transactionUpdateTestSetup($type, $payment_method): void
-    {
-        Self::login();
+    // public static function transactionUpdateTestSetup($type, $payment_method): void
+    // {
+    //     Self::login();
 
-        Transaction::factory()->create([
-            'id' => 1,
-            'category_id' => 1,
-            'type_id' => $type,
-            'payment_method_id' => $payment_method,
-        ]);
-    }
+    //     Transaction::factory()->create([
+    //         'id' => 1,
+    //         'category_id' => 1,
+    //         'type_id' => $type,
+    //         'payment_method_id' => $payment_method,
+    //     ]);
+    // }
 }
