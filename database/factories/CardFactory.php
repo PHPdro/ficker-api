@@ -20,8 +20,8 @@ class CardFactory extends Factory
             'user_id' => 1,
             'flag_id' => 1,
             'card_description' => 'Cartão Nubank',
-            'expiration' => 7,
-            'closure' => 24
+            'card_expiration' => 7,
+            'card_closure' => 24
         ];
     }
 }
