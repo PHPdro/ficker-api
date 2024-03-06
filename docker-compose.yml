@@ -9,11 +9,17 @@ services:
       networks:
         - ficker
       volumes:
-        #- /home/phpdro/Documents/projects/ficker-api:/app
+        - /home/phpdro/Documents/projects/ficker-api:/app
       environment:
         - APP_ENV=local
-      depends_on:
-        - mysql
+
+    # front:
+    #   container_name: ficker_front
+    #   image: ficker-front:latest
+    #   ports:
+    #     - 80:3000
+    #   networks:
+    #     - ficker
 
     mysql:
       container_name: ficker_mysql
