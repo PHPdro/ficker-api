@@ -17,4 +17,7 @@ jobs:
           run: docker build -t ficker-back .
 
         - name: Enviar para ghcr.io
-          run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          run: |
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker tag ficker-back ghcr.io/pedrops/ficker-back:latest
+            docker push ghcr.io/pedrops/ficker-back:latest
