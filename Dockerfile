@@ -14,7 +14,7 @@ RUN docker-php-ext-install calendar
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Clean up
-RUN apk del php8-pear gcc musl-dev wget
+RUN apk del gcc musl-dev wget
 RUN rm -rf /tmp/.zip /var/cache/apk/ /tmp/pear/
 
 ENV APP_ENV=local
