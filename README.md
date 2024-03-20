@@ -8,7 +8,19 @@ cp .env.example .env
 
 2. On the docker-compose.yml, change the laravel container volume to your app directory
 
-![docker-compose config](https://github.com/PHPdro/ficker-api/assets/127140332/726ff0b2-27e1-474f-af9a-2765e4081664)
+```bash
+    laravel:
+      container_name: ficker_laravel
+      image: gbzzz/laravel-php8.1
+      ports:
+        - 8080:80
+      networks:
+        - ficker
+      volumes:
+        - {Your app directory}:/app
+      environment:
+        - APP_ENV=local
+```
 
 3. Run the containers
 
