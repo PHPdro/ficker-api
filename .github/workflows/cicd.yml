@@ -15,3 +15,6 @@ jobs:
 
         - name: Image build
           run: docker build -t ficker-back .
+
+        - name: Enviar para ghcr.io
+          run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
