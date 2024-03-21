@@ -30,6 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
 
+    permissions:
+      contents: read
+      packages: write
+
     services:
       mysql:
         image: mysql:latest
