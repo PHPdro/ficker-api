@@ -8,12 +8,13 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Log into GitHub Container Registry
@@ -24,3 +25,33 @@ jobs:
         
       - name: Push Docker Image to GitHub Container Registry
         run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+  
+  run-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_DATABASE: ficker
+          MYSQL_DATABASE_USERNAME: ficker
+          MYSQL_ROOT_PASSWORD: ficker
+        ports:
+          - 3306:3306
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Prepare environment file
+        run: cp .env.example .env
+
+      - name: Run image
+        run: docker run -d -p 8080:8080 --name ficker-back ghcr.io/phpdro/ficker-api/ficker-back:latest
+      
+      - name: Enter image
+        run: docker exec -it ficker-back bash
+
+      - name: Run tests
+        run: php artisan test --filter test_users_can_store_incomes
+      
