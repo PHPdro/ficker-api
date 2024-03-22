@@ -33,11 +33,13 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:latest
         env:
-          MYSQL_DATABASE: ficker
-          MYSQL_DATABASE_USERNAME: ficker
+          ALLOW_EMPTY_PASSWORD: "no"
           MYSQL_ROOT_PASSWORD: ficker
+          MYSQL_DATABASE: ficker
+          MYSQL_USER: ficker
+          MYSQL_PASSWORD: ficker
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
