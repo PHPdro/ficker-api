@@ -1,0 +1,40 @@
+name: Build and Push to Artifact Registry
+
+on:
+    push:
+        branches:
+        - main
+
+env:
+    PROJECT_ID: cinfo-devops-2023-2
+    REGION: us-central1
+    GAR_LOCATION: us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker
+
+jobs:
+    build-push-artifact:
+        runs-on: ubuntu-latest
+        steps:
+          - name: "Checkout"
+            uses: "actions/checkout@v4"
+        
+          - id: "auth"
+            uses: "google-github-actions/auth@v1"
+            with:
+                credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
+
+          - name: "Set up Cloud SDK"
+            uses: "google-github-actions/setup-gcloud@v1"
+         
+          - name: "Use gcloud CLI"
+            run: "gcloud info"
+
+          - name: "Docker auth"
+            run: gcloud auth configure-docker \
+                 us-central1-docker.pkg.dev
+
+          - name: Build image
+            run: docker build . --file Dockerfile --tag ${{ env.GAR_LOCATION }}
+            working-directory: .
+
+          - name: Push image
+            run: docker push ${{ env.GAR_LOCATION }}
