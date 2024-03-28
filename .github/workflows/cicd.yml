@@ -63,7 +63,7 @@ jobs:
       
       - name: Run tests
         run: |
-          cd app 
+          ls
           php artisan test --filter test_users_can_store_incomes
 
   # build-push-artifact:
