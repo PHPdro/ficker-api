@@ -55,16 +55,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Install dependencies
-      #   run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Prepare environment file
         run: cp .env.example .env 
       
       - name: Run tests
-        run: |
-          ls
-          php artisan test --filter test_users_can_store_incomes
+        run: php artisan test --filter test_users_can_store_incomes
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
