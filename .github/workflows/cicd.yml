@@ -37,8 +37,8 @@ jobs:
     needs: build-and-push
     container:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
-      volumes:
-        - .:/app
+      # volumes:
+      #   - .:/app
 
     services:
       mysql:
