@@ -37,6 +37,8 @@ jobs:
     needs: build-and-push
     container:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
+      volumes:
+        - .:/app
 
     services:
       mysql:
@@ -55,8 +57,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      # - name: Install dependencies
+      #   run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Prepare environment file
         run: cp .env.example .env 
