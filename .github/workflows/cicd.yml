@@ -25,11 +25,11 @@ jobs:
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build Docker Image
-        run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
+      # - name: Build Docker Image
+      #   run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
-      - name: Push Docker Image to GitHub Container Registry
-        run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      # - name: Push Docker Image to GitHub Container Registry
+      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
 
   
   run-tests:
@@ -48,6 +48,15 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      laravel:
+        image: ghcr.io/phpdro/ficker-api/ficker-back
+        ports:
+          - 8080:80
+        # volumes:
+        #   - /home/phpdro/Documents/projects/ficker-api:/app
+        env:
+          APP_ENV: local
 
     steps:
       - name: Checkout code
