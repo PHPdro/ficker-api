@@ -37,8 +37,6 @@ jobs:
     needs: build-and-push
     container:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
-      volumes:
-        - /
 
     services:
       mysql:
@@ -64,7 +62,9 @@ jobs:
         run: cp .env.example .env 
       
       - name: Run tests
-        run: php artisan test --filter test_users_can_store_incomes
+        run: |
+          cd app 
+          php artisan test --filter test_users_can_store_incomes
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
