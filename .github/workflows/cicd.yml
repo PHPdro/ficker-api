@@ -38,7 +38,7 @@ jobs:
     container:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
       volumes:
-        - .
+        - .:/app
 
     services:
       mysql:
