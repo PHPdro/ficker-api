@@ -25,11 +25,11 @@ jobs:
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # - name: Build Docker Image
-      #   run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
+      - name: Build Docker Image
+        run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
-      # - name: Push Docker Image to GitHub Container Registry
-      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      - name: Push Docker Image to GitHub Container Registry
+        run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
 
   
   run-tests:
@@ -37,12 +37,12 @@ jobs:
     needs: build-and-push
     container:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
-      volumes:
-        - /__w/ficker-api/ficker-api:/app
-      ports:
-        - 8080:80
-      env:
-        APP_ENV: local
+      # volumes:
+      #   - /__w/ficker-api/ficker-api:/app
+      # ports:
+      #   - 8080:80
+      # env:
+      #   APP_ENV: local
 
     services: 
       mysql:
