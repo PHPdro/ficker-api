@@ -39,6 +39,10 @@ jobs:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
       volumes:
         - /github/home:/app
+      ports:
+        - 8080:80
+      env:
+        APP_ENV: local
 
     services:
       mysql:
@@ -57,8 +61,8 @@ jobs:
       # - name: Checkout code
       #   uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: ls
+      - name: Check for dockerenv file
+        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
 
       # - name: Prepare environment file
       #   run: cp .env.example .env 
