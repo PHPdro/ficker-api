@@ -35,6 +35,8 @@ RUN { echo "cd /app && composer install --no-interaction --optimize-autoloader";
 # Permission to execute the script
 RUN chmod +x /opt/docker/provision/entrypoint.d/start.sh
 
-WORKDIR /github/home
+WORKDIR /app
+
+COPY . .
 
 EXPOSE 80
