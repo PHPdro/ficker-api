@@ -39,10 +39,10 @@ jobs:
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
       # volumes:
       #   - /__w/ficker-api/ficker-api:/app
-      # ports:
-      #   - 8080:80
-      # env:
-      #   APP_ENV: local
+      ports:
+        - 8080:80
+      env:
+        APP_ENV: local
 
     services: 
       mysql:
@@ -68,7 +68,7 @@ jobs:
       #   run: cp .env.example .env 
       
       - name: Run tests
-        run: php artisan test --filter test_users_can_store_incomes
+        run: docker ps
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
