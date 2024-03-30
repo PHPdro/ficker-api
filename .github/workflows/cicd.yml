@@ -25,24 +25,17 @@ jobs:
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build Docker Image
-        run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
+      # - name: Build Docker Image
+      #   run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
-      - name: Push Docker Image to GitHub Container Registry
-        run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      # - name: Push Docker Image to GitHub Container Registry
+      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
 
   
   run-tests:
     runs-on: ubuntu-latest
     needs: build-and-push
     container:
-      image: ghcr.io/phpdro/ficker-api/ficker-back:latest
-      # volumes:
-      #   - /__w/ficker-api/ficker-api:/app
-      ports:
-        - 8080:80
-      env:
-        APP_ENV: local
 
     services: 
       mysql:
@@ -57,17 +50,16 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+      app:
+        image: ghcr.io/phpdro/ficker-api/ficker-back:latest
+        ports:
+          - 8080:80
+        env:
+          APP_ENV: local
+
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v4
-
-      # - name: Check for dockerenv file
-      #   run: ls
-
-      # - name: Prepare environment file
-      #   run: cp .env.example .env 
       
-      - name: Run tests
+      - name: Run image
         run: docker ps
 
   # build-push-artifact:
