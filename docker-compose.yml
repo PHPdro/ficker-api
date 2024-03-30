@@ -3,7 +3,7 @@ version: '3.8'
 services:
     laravel:
       container_name: ficker_laravel
-      image: ghcr.io/phpdro/ficker-api/ficker-back
+      image: ghcr.io/phpdro/ficker-api/ficker-back:latest
       ports:
         - 8080:80
       networks:
