@@ -22,6 +22,8 @@ ENV PHP_DATE_TIMEZONE America/Maceio
 
 # Script to run after container starts
 RUN { echo "cd /app && composer install --no-interaction --optimize-autoloader"; \
+    # Update composer
+    echo "composer update"; \
     #Generate .env file
     echo "cp .env.example .env"; \
     # Generating app key
