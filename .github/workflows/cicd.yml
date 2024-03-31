@@ -64,8 +64,8 @@ jobs:
 
       - name: Test
         run: |
-          docker exec -it ficker_app bash
-          ls -la
+          docker exec ficker_app composer update
+          docker exec ficker_app php artisan test --filter test_users_can_store_incomes
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
