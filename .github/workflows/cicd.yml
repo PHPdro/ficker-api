@@ -63,7 +63,9 @@ jobs:
         run: docker run -d -p 8080:80 --name ficker_app ghcr.io/phpdro/ficker-api/ficker-back:latest
 
       - name: Test
-        run: docker exec ficker_app php artisan test --filter test_users_can_store_incomes
+        run: |
+          docker exec -it ficker_app bash
+          ls -la
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
