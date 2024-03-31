@@ -60,7 +60,7 @@ jobs:
     steps:
       
       - name: Run image
-        run: docker ps
+        run: docker ps -q
 
   # build-push-artifact:
   #   runs-on: ubuntu-latest
