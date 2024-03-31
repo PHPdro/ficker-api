@@ -37,18 +37,18 @@ jobs:
     needs: build-and-push
     container:
 
-    services: 
-      mysql:
-        image: mysql:latest
-        env:
-          ALLOW_EMPTY_PASSWORD: "no"
-          MYSQL_ROOT_PASSWORD: ficker
-          MYSQL_DATABASE: ficker
-          MYSQL_USER: ficker
-          MYSQL_PASSWORD: ficker
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # services: 
+    #   mysql:
+    #     image: mysql:latest
+    #     env:
+    #       ALLOW_EMPTY_PASSWORD: "no"
+    #       MYSQL_ROOT_PASSWORD: ficker
+    #       MYSQL_DATABASE: ficker
+    #       MYSQL_USER: ficker
+    #       MYSQL_PASSWORD: ficker
+    #     ports:
+    #       - 3306:3306
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
       # app:
       #   image: ghcr.io/phpdro/ficker-api/ficker-back:latest
@@ -58,9 +58,11 @@ jobs:
       #     APP_ENV: local
 
     steps:
-      
+      - name: Run db
+        run: docker run -d -p 3306:3306 -e ALLOW_EMPTY_PASSWORD="no" -e MYSQL_ROOT_PASSWORD=ficker -e MYSQL_DATABASE=ficker -e MYSQL_USER=ficker -e MYSQL_PASSWORD=ficker --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 --name ficker_db mysql:latest
+
       - name: Run image
-        run: docker run -d -p 8080:80 -e APP_ENV=local -e MYSQL_ROOT_PASSWORD=ficker -e MYSQL_DATABASE=ficker -e MYSQL_USER=ficker -e MYSQL_PASSWORD=ficker --name ficker_app ghcr.io/phpdro/ficker-api/ficker-back:latest
+        run: docker run -d -p 8080:80 -e APP_ENV=local --name ficker_app ghcr.io/phpdro/ficker-api/ficker-back:latest
 
       - name: Test
         run: |
