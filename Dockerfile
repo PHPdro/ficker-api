@@ -42,7 +42,7 @@ WORKDIR /app
 COPY . .
 
 RUN composer install --no-interaction --optimize-autoloader
-RUN cp .env.example .env
 RUN php artisan key:generate
+RUN php artisan optimize
 
 EXPOSE 80
