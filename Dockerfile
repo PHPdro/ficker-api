@@ -20,25 +20,29 @@ RUN rm -rf /tmp/.zip /var/cache/apk/ /tmp/pear/
 ENV APP_ENV=local
 ENV PHP_DATE_TIMEZONE America/Maceio
 
-# Script to run after container starts
-RUN { echo "cd /app && composer install --no-interaction --optimize-autoloader"; \
-    #Generate .env file
-    echo "cp .env.example .env"; \
-    # Generating app key
-    echo "php artisan key:generate"; \
-    # Optimizing Route loading
-    echo "php artisan route:cache"; \
-    # Optimizing View loading
-    echo "php artisan view:cache"; \
-    # Migrating database
-    echo "php artisan migrate --force"; \
-    } > /opt/docker/provision/entrypoint.d/start.sh
+# # Script to run after container starts
+# RUN { echo "cd /app && composer install --no-interaction --optimize-autoloader"; \
+#     #Generate .env file
+#     echo "cp .env.example .env"; \
+#     # Generating app key
+#     echo "php artisan key:generate"; \
+#     # Optimizing Route loading
+#     echo "php artisan route:cache"; \
+#     # Optimizing View loading
+#     echo "php artisan view:cache"; \
+#     # Migrating database
+#     echo "php artisan migrate --force"; \
+#     } > /opt/docker/provision/entrypoint.d/start.sh
 
-# Permission to execute the script
-RUN chmod +x /opt/docker/provision/entrypoint.d/start.sh
+# # Permission to execute the script
+# RUN chmod +x /opt/docker/provision/entrypoint.d/start.sh
 
 WORKDIR /app
 
 COPY . .
+
+RUN composer install --no-interaction --optimize-autoloader
+RUN cp .env.example .env
+RUN php artisan key:generate
 
 EXPOSE 80

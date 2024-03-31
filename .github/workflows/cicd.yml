@@ -60,11 +60,10 @@ jobs:
     steps:
       
       - name: Run image
-        run: docker run -d -e DATABASE_URL=mysql://ficker:ficker@mysql:3306/ficker?serverVersion=8.3 --name ficker_app ghcr.io/phpdro/ficker-api/ficker-back:latest
+        run: docker run -d --name ficker_app ghcr.io/phpdro/ficker-api/ficker-back:latest
 
       - name: Test
         run: |
-          docker exec ficker_app composer update
           docker exec ficker_app php artisan test --filter test_users_can_store_incomes
 
   # build-push-artifact:
