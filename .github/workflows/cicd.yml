@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_call:
-    secrets:
-      SERVICE_ACCOUNT_KEY:
-        required: true
-
+      
 env:
   PROJECT_ID: cinfo-devops-2023-2
   REGION: us-central1
