@@ -1,13 +1,13 @@
 name: Pedrops e Alambda
 
 on:
+  push:
+    branches:
+      - main
   workflow_call:
     secrets:
       SERVICE_ACCOUNT_KEY:
         required: true
-  push:
-    branches:
-      - main
 
 env:
   PROJECT_ID: cinfo-devops-2023-2
