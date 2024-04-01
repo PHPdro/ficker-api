@@ -1,6 +1,10 @@
 name: Pedrops e Alambda
 
 on:
+  workflow_call:
+    secrets:
+      SERVICE_ACCOUNT_KEY:
+        required: true
   push:
     branches:
       - main
