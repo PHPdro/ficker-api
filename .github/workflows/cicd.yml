@@ -59,10 +59,13 @@ jobs:
     needs: run-tests
 
     steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
-            credentials_json: "f621c60009f9bbe32b30467c6e6eff920673335a"    
+            credentials_json: "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCsmJYGuX9w86vS\n+4XwleTsjvTq1tnSGh4nDKX4mCDYJ5xFNvI1Hc5m4xSBZCoE9YAbruTsNjdmipN8\nKiEI7j0hOOWTgtmkprbTXeT0gNvdE1Vt/8V7rjEjpTFmXKxPPbqAZIJkgNIS6umx\n2Uih2Ok/s4eggR8JHRG9Z186GQM4SKUDlr6x5K3aWvQ5pFiPDCeU1l7n39YL9i1F\na5XLl79m0Cv1MmMyWuMEkVoLydgchWO0VacqRj61y0AP9X31tuxJaGCoJDDHwh6y\nSyXn7esXHh7VzqGRttG0fweDqlMCaqL7ryJITnla/j4NhDXNve8BSJj79B32weLd\njeSGSQB5AgMBAAECggEACNHfUMan6Yi6LhTmWk3+ncwMXffOt7rX8Zzm2lZDz2fu\nx2awZ+B3DLDr+lS5BPnaqw976Uo3+Ih6Uu0ANSmffBQhPzF/l7dhPlnc+lWfZqO3\nSOC6IcDcB/tIE/gGYiJAZpE8TJB8q7TPbmQxHvwrpzKwapZOlLOklW4z4o8mp/iQ\n2Eq//L3yHlhh3ZQP4a8CF9qgkS6cqjb+23FIqH1AZBlIJ6bus+YuX/rcUC4puhJa\nUjKdOiUoGbFFsUYdz6UN+2w7lgQLtIW461hMlPgvCSLIjqJb2bBwFQwWnTR4gLTZ\nDeuBDZqQiV2OP9BqATzyvDym6aGw63JI0A+L3f8wgQKBgQDfXBKGpD8y78J7fquP\nGHtKx7oHkZjvk79CVCkBrhHXpdGzWqsJjkQNGvcpLmPTnYwZw3rXhml/AwtjOuPe\nnrm1ILpk9XkmqNPMhISClBqzueDE+05DzpWCC4miVr3uUAr1tMDOfc+iS7zhj6Eu\nGkHGGdHyNzyvsNTezuINoYMqEQKBgQDF0W/dR9Kq0o4PPsLccJymxKWsRvmhYWJ7\nw506xgFdwGhSdvojEz4ufrhc0KxGEG809DkbQiRHUMznkZYWc+TcAUvVJx2Rrumf\n1mMxt0rYehJWnHAfsE29nwIcOoX8MFI92CArMVZkZ2Jpw6BjOi1Z9wcc7JKLT2OO\nPFr4fG1H6QKBgByF1HPPK6bkiTBeB6h5Vt1AzhfDVwVZF7ZvquDlCrBAI5xEusy4\nlyYZSHDA1MykNMzhcqFtL7GhgOXGEm1OVaa0rDjSRAtUyd83GPjX0uUamoJtGRx9\nmAgIUyYg75YsMIoZ7/kuhcJS66beQZXykm2qxG2q8hv5d+WQA7v74RURAoGAc2sV\nl8h2NFERrfdyfmf+HpeSCoiG0hAeBBRIQqiQ14CR3bupipmJqFsreowOV/ryx7TP\nNQZMYIfWZi5dodAQ8gSXmFBwQjYJ/cZ6reFB/DiNRpeUHAkj8sU51/qVfmU7NvZJ\nHqp0u7ROiWMoy3yARYOKVOf7QOkbLzwr39vJbzECgYA2vkXXHXH6MCaZsCz1sAAx\ngenAg834yCEUqT5j4oJb49wOzHyO8xj6aapAAIEeQl0Yebe+Fdwu81QI5L81xwle\nkgC9biOLvNtdLf8BWWqTq83OWJpUJ+ilk89y5Q3Gk5DmFnX6pPXmiJW3JDNc6dZI\n8LFjje9+16Ujcfy5QOpeEQ=="    
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
@@ -80,4 +83,3 @@ jobs:
 
       - name: Push image
         run: docker push ${{ env.GAR_LOCATION }}
-        
