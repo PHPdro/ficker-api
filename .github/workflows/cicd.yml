@@ -62,9 +62,6 @@ jobs:
       - name: Checkout code
         uses: "actions/checkout@v2"
 
-      - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Pull image
         run: |
           docker pull ghcr.io/phpdro/ficker-api/ficker-back:latest
@@ -81,7 +78,7 @@ jobs:
           version: ">= 363.0.0"
 
       - name: gcloud cli
-        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023/docker/pedro
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
