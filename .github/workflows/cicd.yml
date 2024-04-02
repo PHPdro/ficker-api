@@ -73,9 +73,7 @@ jobs:
           version: ">= 363.0.0"
 
       - name: gcloud cli
-        run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
