@@ -73,7 +73,7 @@ jobs:
           version: ">= 363.0.0"
 
       - name: gcloud cli
-        run: gcloud auth print-access-token phs6@aluno.ifal.edu.br
+        run: gcloud auth list
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
