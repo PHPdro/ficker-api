@@ -80,7 +80,6 @@ jobs:
       - name: gcloud cli
         run: |
           gcloud config set account phs6@aluno.ifal.edu.br
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
