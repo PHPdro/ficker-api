@@ -73,7 +73,9 @@ jobs:
           version: ">= 363.0.0"
 
       - name: gcloud cli
-        run: gcloud auth print-access-token github-actions@cinfo-devops-2023-2.iam.gserviceaccount.com
+        run: |
+          gcloud confi set account github-actions@cinfo-devops-2023-2.iam.gserviceaccount.com
+          gcloud auth print-access-token
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
