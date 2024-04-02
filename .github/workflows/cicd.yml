@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - main
-      
-# env:
-#   PROJECT_ID: cinfo-devops-2023-2
-#   REGION: us-central1
-#   GAR_LOCATION: us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker
 
 jobs:
   build-push-ghcr:
@@ -79,7 +74,8 @@ jobs:
 
       - name: gcloud cli
         run: |
-          gcloud auth print-access-token
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
