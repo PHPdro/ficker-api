@@ -70,10 +70,8 @@ jobs:
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"
 
-      - name: Gcloud auth
-        run: |
-          gcloud auth login --no-launch-browser
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023/docker/pedro
+      - name: GCP auth
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023/docker/pedro
 
       - name: Pull image
         run: |
