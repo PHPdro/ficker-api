@@ -59,28 +59,24 @@ jobs:
     needs: run-tests
 
     steps:
-      - name: "Checkout"
+      - name: Checkout code
         uses: "actions/checkout@v4"
 
-      - id: "auth"
-        uses: "google-github-actions/auth@v1"
+      - id: auth
+        uses: "google-github-actions/auth@v2"
         with:
             credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"    
 
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v1"
-      
-      - name: "Use gcloud CLI"
-        run: "gcloud info"
+      - name: Set up Cloud SDK
+        uses: "google-github-actions/setup-gcloud@v2"
 
-      - name: "Docker auth"
-        run: gcloud auth configure-docker \
-              us-central1-docker.pkg.dev
+      - name: Docker auth
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023/docker/pedro
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag ${{ env.GAR_LOCATION }}
-        working-directory: . 
+      - name: Pull image
+        run: |
+          docker pull ghcr.io/phpdro/ficker-api/ficker-back:latest
+          docker tag ghcr.io/phpdro/ficker-api/ficker-back:latest us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
       - name: Push image
-        run: |
-          docker push ${{ env.GAR_LOCATION }}
+        run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
