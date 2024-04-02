@@ -24,7 +24,7 @@ jobs:
       #   run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
       # - name: Push Docker Image to GitHub Container Registry
-      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:lates
 
   run-tests:
     runs-on: ubuntu-latest
