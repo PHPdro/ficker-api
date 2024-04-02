@@ -98,4 +98,3 @@ jobs:
         with:
           service: "pedro"
           image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
-          port: 8080
