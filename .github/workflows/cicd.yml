@@ -81,6 +81,9 @@ jobs:
   deploy-to-cloud-run:
     runs-on: ubuntu-latest
     needs: push-artifact-registry
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - name: Login to gcp
