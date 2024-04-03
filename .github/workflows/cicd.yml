@@ -97,8 +97,10 @@ jobs:
           version: ">= 363.0.0"
 
       - name: Deploy to Cloud Run
-        # uses: "google-github-actions/deploy-cloudrun@v2"
-        # with:
-        #   service: "pedro"
-        #   image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
-        run: gcloud run deploy pedro --image us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest --max-instances=3 --port 8080 --platform managed --region us-central1
+        uses: "google-github-actions/deploy-cloudrun@v2"
+        with:
+          service: "pedro"
+          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
+
+      - name: Use output
+        run: echo "The URL is ${{ steps.deploy.outputs.url }}"
