@@ -116,9 +116,9 @@ jobs:
           service: "pedro"
           image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
           secrets: |
-            ".:/var/www/html"
-            "./docker/apache-run:/var/run/apache2"
-            "./docker/apache-lock:/var/lock/apache2"
+            .:/var/www/html:latest
+            ./docker/apache-run:/var/run/apache2:latest
+            ./docker/apache-lock:/var/lock/apache2:latest
     
 
       # - name: Use output
