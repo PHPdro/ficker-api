@@ -6,52 +6,52 @@ on:
       - main
 
 jobs:
-  # build-push-ghcr:
-  #   runs-on: ubuntu-latest
+  build-push-ghcr:
+    runs-on: ubuntu-latest
 
-  #   permissions:
-  #     contents: read
-  #     packages: write
+    permissions:
+      contents: read
+      packages: write
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     - name: Log into GitHub Container Registry
-  #       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-  #     - name: Build Docker Image
-  #       run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
+      - name: Build Docker Image
+        run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
-  #     - name: Push Docker Image to GitHub Container Registry
-  #       run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      - name: Push Docker Image to GitHub Container Registry
+        run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
 
-  # run-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: build-push-ghcr
+  run-tests:
+    runs-on: ubuntu-latest
+    needs: build-push-ghcr
 
-  #   steps:
-  #     - name: Run db image
-  #       run: docker run -d -p 3306:3306 
-  #           -e ALLOW_EMPTY_PASSWORD="no" 
-  #           -e MYSQL_ROOT_PASSWORD=ficker 
-  #           -e MYSQL_DATABASE=ficker 
-  #           -e MYSQL_USER=ficker 
-  #           -e MYSQL_PASSWORD=ficker 
-  #           --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 
-  #           --name bd mysql:latest
+    steps:
+      - name: Run db image
+        run: docker run -d -p 3306:3306 
+            -e ALLOW_EMPTY_PASSWORD="no" 
+            -e MYSQL_ROOT_PASSWORD=ficker 
+            -e MYSQL_DATABASE=ficker 
+            -e MYSQL_USER=ficker 
+            -e MYSQL_PASSWORD=ficker 
+            --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 
+            --name bd mysql:latest
 
-  #     - name: Run app image
-  #       run: docker run -d --name app ghcr.io/phpdro/ficker-api/ficker-back:latest
+      - name: Run app image
+        run: docker run -d --name app ghcr.io/phpdro/ficker-api/ficker-back:latest
 
-  #     - name: Run tests
-  #       run: |
-  #         docker exec app php artisan migrate:fresh --seed
-  #         docker exec app php artisan test --filter test_users_can_store_incomes
+      - name: Run tests
+        run: |
+          docker exec app php artisan migrate:fresh --seed
+          docker exec app php artisan test --filter test_users_can_store_incomes
 
   push-artifact-registry:
     runs-on: ubuntu-latest
-    # needs: run-tests
+    needs: run-tests
 
     steps:
       - name: Checkout code
