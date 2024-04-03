@@ -101,4 +101,4 @@ jobs:
         # with:
         #   service: "pedro"
         #   image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
-        run: gcloud run deploy pedro --image us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest --max-instances=3 --port 8080
+        run: gcloud run deploy pedro --image us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest --max-instances=3 --port 8080 --platform managed --region us-central1
