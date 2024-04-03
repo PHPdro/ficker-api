@@ -100,7 +100,7 @@ jobs:
         uses: "google-github-actions/deploy-cloudrun@v2"
         with:
           service: "pedro"
-          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-d:latest"
+          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest"
 
       # - name: Use output
       #   run: echo "The URL is ${{ steps.deploy.outputs.url }}"
