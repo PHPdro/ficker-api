@@ -1,6 +1,8 @@
 name: Pedrops e Alambda
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
@@ -113,6 +115,10 @@ jobs:
         with:
           service: "pedro"
           image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
+          secrets: |
+            ".:/var/www/html"
+            "./docker/apache-run:/var/run/apache2"
+            "./docker/apache-lock:/var/lock/apache2"
     
 
       # - name: Use output
