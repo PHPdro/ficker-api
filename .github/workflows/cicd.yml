@@ -101,6 +101,12 @@ jobs:
         with:
           service: "pedro"
           image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest"
-
+          env_vars: |
+            ALLOW_EMPTY_PASSWORD="no" 
+            MYSQL_ROOT_PASSWORD=ficker
+            MYSQL_DATABASE=ficker 
+            MYSQL_USER=ficker 
+            MYSQL_PASSWORD=ficker
+            
       # - name: Use output
       #   run: echo "The URL is ${{ steps.deploy.outputs.url }}"
