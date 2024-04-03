@@ -59,8 +59,8 @@ jobs:
 
       - name: Pull image
         run: |
-          docker pull mysql:latest
-          docker tag mysql:latest us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest
+          docker pull ghcr.io/phpdro/ficker-api/ficker-back:latest
+          docker tag ghcr.io/phpdro/ficker-api/ficker-back:latest us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
       - name: Login to gcp
         uses: "google-github-actions/auth@v2"
@@ -73,10 +73,10 @@ jobs:
           version: ">= 363.0.0"
 
       - name: gcloud cli
-        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
       - name: Push image
-        run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest
+        run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
   deploy-to-cloud-run:
     runs-on: ubuntu-latest
@@ -96,17 +96,24 @@ jobs:
         with:
           version: ">= 363.0.0"
 
+      # - name: Deploy to Cloud Run
+      #   uses: "google-github-actions/deploy-cloudrun@v2"
+      #   with:
+      #     service: "pedro-bd"
+      #     image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest"
+      #     env_vars: |
+      #       ALLOW_EMPTY_PASSWORD="no" 
+      #       MYSQL_ROOT_PASSWORD=ficker
+      #       MYSQL_DATABASE=ficker 
+      #       MYSQL_USER=ficker 
+      #       MYSQL_PASSWORD=ficker
+
       - name: Deploy to Cloud Run
         uses: "google-github-actions/deploy-cloudrun@v2"
         with:
           service: "pedro-bd"
-          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro-bd:latest"
-          env_vars: |
-            ALLOW_EMPTY_PASSWORD="no" 
-            MYSQL_ROOT_PASSWORD=ficker
-            MYSQL_DATABASE=ficker 
-            MYSQL_USER=ficker 
-            MYSQL_PASSWORD=ficker
+          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
+    
 
       # - name: Use output
       #   run: echo "The URL is ${{ steps.deploy.outputs.url }}"
