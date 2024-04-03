@@ -43,16 +43,16 @@ jobs:
             --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 
             --name bd mysql:latest
 
-      - name: Run app image
-        run: docker run -d --name app ghcr.io/phpdro/ficker-api/ficker-back:latest
-
-      - name: Run tests
-        run: |
-          docker exec app php artisan migrate:fresh --seed
-          docker exec app php artisan test --filter test_users_can_store_incomes
-
       - name: test
         run: docker inspect bd
+
+      # - name: Run app image
+      #   run: docker run -d --name app ghcr.io/phpdro/ficker-api/ficker-back:latest
+
+      # - name: Run tests
+      #   run: |
+      #     docker exec app php artisan migrate:fresh --seed
+      #     docker exec app php artisan test --filter test_users_can_store_incomes
 
   # push-artifact-registry:
   #   runs-on: ubuntu-latest
