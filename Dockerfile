@@ -1,4 +1,4 @@
-FROM webdevops/php-apache:8.1-alpine
+FROM webdevops/php-apache:8.2-alpine
 
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
