@@ -19,7 +19,6 @@ RUN rm -rf /tmp/.zip /var/cache/apk/ /tmp/pear/
 
 ENV APP_ENV=local
 ENV PHP_DATE_TIMEZONE America/Maceio
-ENV HOST 0.0.0.0
 
 WORKDIR /app
 
