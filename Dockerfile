@@ -1,5 +1,7 @@
 FROM webdevops/php-apache:8.2-alpine
 
+RUN chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/log/apache2
+
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
 RUN apk add --update --no-cache oniguruma-dev libxml2-dev wget
@@ -29,4 +31,4 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
 
-EXPOSE 80
+EXPOSE 8080
