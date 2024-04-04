@@ -1,4 +1,4 @@
-FROM webdevops/php-nginx:8.2-alpine
+FROM webdevops/php-apache:8.2-alpine
 
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
@@ -21,11 +21,6 @@ ENV APP_ENV=local
 ENV PHP_DATE_TIMEZONE America/Maceio
 
 WORKDIR /app
-
-RUN sudo rm -rf /var/log/nginx
-RUN sudo mkdir /var/log/nginx \
-RUN sudo touch /var/log/nginx/error.log \
-RUN sudo chmod -R u+X /var/log/nginx
 
 COPY . .
 
