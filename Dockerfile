@@ -22,16 +22,16 @@ ENV PHP_DATE_TIMEZONE America/Maceio
 
 WORKDIR /app
 
+RUN sudo rm -rf /var/log/nginx
+RUN sudo mkdir /var/log/nginx \
+RUN sudo touch /var/log/nginx/error.log \
+RUN sudo chmod -R u+X /var/log/nginx
+
 COPY . .
 
 RUN composer install --no-interaction --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
-
-RUN sudo rm -rf /var/log/nginx \
-    sudo mkdir /var/log/nginx \
-    sudo touch /var/log/nginx/error.log \
-    sudo chmod -R u+X /var/log/nginx
 
 EXPOSE 80
