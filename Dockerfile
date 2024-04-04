@@ -29,4 +29,9 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
 
+RUN sudo rm -rf /var/log/nginx \
+    sudo mkdir /var/log/nginx \
+    sudo touch /var/log/nginx/error.log \
+    sudo chmod -R u+X /var/log/nginx
+
 EXPOSE 80
