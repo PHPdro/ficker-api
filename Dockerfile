@@ -6,8 +6,8 @@ ENV WEB_DOCUMENT_ROOT=/app \
     WEB_PHP_TIMEOUT=600 \
     WEB_PHP_SOCKET=""
 ENV WEB_PHP_SOCKET=127.0.0.1:9000
-ENV APACHE_RUN_USER='#1000' \
-    APACHE_RUN_GROUP='#1000'
+# ENV APACHE_RUN_USER='#1000' \
+#     APACHE_RUN_GROUP='#1000'
 
 COPY conf/ /opt/docker/
 
@@ -25,7 +25,7 @@ RUN set -x \
         s!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g; \
         s!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g; \
         ' /etc/apache2/httpd.conf \
-    $$ chown -R 1000:1000 apache2 \
+    # $$ chown -R 1000:1000 apache2 \
     && docker-run-bootstrap \
     && docker-image-cleanup
 
