@@ -22,11 +22,11 @@ jobs:
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build Docker Image
-        run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
+      # - name: Build Docker Image
+      #   run: docker build -t ghcr.io/phpdro/ficker-api/ficker-back:latest .
         
-      - name: Push Docker Image to GitHub Container Registry
-        run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
+      # - name: Push Docker Image to GitHub Container Registry
+      #   run: docker push ghcr.io/phpdro/ficker-api/ficker-back:latest
 
   run-tests:
     runs-on: ubuntu-latest
@@ -80,23 +80,23 @@ jobs:
       - name: Push image
         run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
-  deploy-to-cloud-run:
-    runs-on: ubuntu-latest
-    needs: push-artifact-registry
+  # deploy-to-cloud-run:
+  #   runs-on: ubuntu-latest
+  #   needs: push-artifact-registry
 
-    steps:
-      - name: Login to gcp
-        uses: "google-github-actions/auth@v2"
-        with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+  #   steps:
+  #     - name: Login to gcp
+  #       uses: "google-github-actions/auth@v2"
+  #       with:
+  #         credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
 
-      - name: Set up Cloud SDK
-        uses: "google-github-actions/setup-gcloud@v2"
-        with:
-          version: ">= 363.0.0"
+  #     - name: Set up Cloud SDK
+  #       uses: "google-github-actions/setup-gcloud@v2"
+  #       with:
+  #         version: ">= 363.0.0"
 
-      - name: Deploy to Cloud Run
-        uses: "google-github-actions/deploy-cloudrun@v2"
-        with:
-          service: "pedro"
-          image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
+  #     - name: Deploy to Cloud Run
+  #       uses: "google-github-actions/deploy-cloudrun@v2"
+  #       with:
+  #         service: "pedro"
+  #         image: "us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest"
