@@ -1,5 +1,8 @@
 FROM webdevops/php-apache:8.2-alpine
 
+ENV APACHE_RUN_USER='#1000' \
+    APACHE_RUN_GROUP='#1000'
+
 RUN chown -R 1000:1000 /etc/apache2
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
