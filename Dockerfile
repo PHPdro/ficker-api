@@ -1,6 +1,6 @@
 FROM webdevops/php-apache:8.2-alpine
 
-
+RUN usermod -g 1007 www-data
 
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
@@ -30,6 +30,5 @@ RUN composer install --no-interaction --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
-RUN usermod -g 1007 www-data
 
 EXPOSE 8080
