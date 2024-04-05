@@ -1,11 +1,6 @@
 FROM webdevops/php-apache:8.2-alpine
 
-ARG UNAME=www-data
-ARG UGROUP=www-data
-ARG UID=1000
-ARG GID=1001
-RUN usermod  --uid $UID $UNAME
-RUN groupmod --gid $GID $UGROUP
+
 
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
@@ -35,5 +30,6 @@ RUN composer install --no-interaction --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
+RUN usermod -g 1007 www-data
 
 EXPOSE 8080
