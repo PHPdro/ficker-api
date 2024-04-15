@@ -51,34 +51,34 @@ jobs:
           docker exec app php artisan migrate:fresh --seed
           docker exec app php artisan test --filter test_users_can_store_incomes
 
-  push-artifact-registry:
-    runs-on: ubuntu-latest
-    needs: run-tests
+  # push-artifact-registry:
+  #   runs-on: ubuntu-latest
+  #   needs: run-tests
 
-    steps:
-      - name: Checkout code
-        uses: "actions/checkout@v4"
+  #   steps:
+  #     - name: Checkout code
+  #       uses: "actions/checkout@v4"
 
-      - name: Pull image
-        run: |
-          docker pull ghcr.io/phpdro/ficker-api/ficker-back:latest
-          docker tag ghcr.io/phpdro/ficker-api/ficker-back:latest us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
+  #     - name: Pull image
+  #       run: |
+  #         docker pull ghcr.io/phpdro/ficker-api/ficker-back:latest
+  #         docker tag ghcr.io/phpdro/ficker-api/ficker-back:latest us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
-      - name: Login to gcp
-        uses: "google-github-actions/auth@v2"
-        with:
-            credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" 
+  #     - name: Login to gcp
+  #       uses: "google-github-actions/auth@v2"
+  #       with:
+  #           credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" 
 
-      - name: Set up Cloud SDK
-        uses: "google-github-actions/setup-gcloud@v2"
-        with:
-          version: ">= 363.0.0"
+  #     - name: Set up Cloud SDK
+  #       uses: "google-github-actions/setup-gcloud@v2"
+  #       with:
+  #         version: ">= 363.0.0"
 
-      - name: gcloud cli
-        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
+  #     - name: gcloud cli
+  #       run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro
 
-      - name: Push image
-        run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
+  #     - name: Push image
+  #       run: docker push us-central1-docker.pkg.dev/cinfo-devops-2023-2/docker/pedro:latest
 
   # deploy-to-cloud-run:
   #   runs-on: ubuntu-latest

@@ -1,14 +1,9 @@
-FROM webdevops/php-nginx:8.2-alpine
+FROM webdevops/php-apache:8.2-alpine
 
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
 RUN apk add --update --no-cache oniguruma-dev libxml2-dev wget
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install ctype
-RUN docker-php-ext-install fileinfo
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install calendar
+RUN docker-php-ext-install bcmath ctype fileinfo mbstring pdo calendar
 
 # Copy Composer binary from the Composer official Docker image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
