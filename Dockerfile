@@ -24,4 +24,4 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
 
-EXPOSE 80
+EXPOSE 8080
