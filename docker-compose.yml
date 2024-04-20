@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
     laravel:
       container_name: ficker_laravel
