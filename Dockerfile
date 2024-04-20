@@ -24,5 +24,6 @@ RUN composer install --no-interaction --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
+RUN chown -R application /app/storage
 
 EXPOSE 80
