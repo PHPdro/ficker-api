@@ -14,6 +14,7 @@ RUN rm -rf /tmp/.zip /var/cache/apk/ /tmp/pear/
 
 ENV APP_ENV=local
 ENV PHP_DATE_TIMEZONE America/Maceio
+ENV WEB_DOCUMENT_ROOT /app/public
 
 WORKDIR /app
 
@@ -24,4 +25,4 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
 
-EXPOSE 8080
+EXPOSE 80
