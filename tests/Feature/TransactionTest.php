@@ -36,7 +36,7 @@ class TransactionTest extends TestCase
             'type_id' => 1,
             'transaction_description' => 'CURSO DE LARAVEL',
             'transaction_value' => 500.00,
-            // 'date' => date('Y-m-d')
+            'date' => date('Y-m-d')
         ]);
 
         $response->assertStatus(201);
