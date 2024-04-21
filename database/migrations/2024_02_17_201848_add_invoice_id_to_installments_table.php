@@ -1,4 +1,4 @@
-<?php
+test_users_can_store_incomes<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

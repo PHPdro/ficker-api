@@ -6,8 +6,8 @@ services:
         - 8080:80
       networks:
         - ficker
-      # volumes:
-      #   - /home/phpdro/Documents/projects/ficker-api:/app
+      volumes:
+        - /home/phpdro/Documents/projects/ficker-api:/app
       environment:
         - APP_ENV=local
 

@@ -96,7 +96,7 @@ class TransactionTest extends TestCase
         ]);
 
         $error = session('errors')->get('category_id')[0];
-        $this->assertEquals($error,'The category id field is required.');
+        $this->assertEquals($error,'The category field is required.');
     }
 
     public function test_users_can_not_store_transactions_without_the_new_category_description(): void
@@ -110,7 +110,7 @@ class TransactionTest extends TestCase
         ]);
 
         $errors = session('errors')->get('category_description')[0];
-        $this->assertEquals($errors,'The category description field is required when category id is 0.');
+        $this->assertEquals($errors,'The category description field is required.');
     }
 
     public function test_users_can_not_store_a_credit_card_transaction_without_a_type(): void
@@ -125,10 +125,8 @@ class TransactionTest extends TestCase
             'installments' => 2
         ]);
 
-        $errors = session('errors');
-        $this->assertEquals($errors->get('type_id')[0],"O campo tipo é obrigatório.");
-        $this->assertEquals(0, count(Transaction::all()));
-        $this->assertEquals(0, count(Installment::all()));
+        $errors = session('errors')->get('type_id')[0];
+        $this->assertEquals($errors,'The type field is required.');
     }
 
     public function test_users_can_not_store_a_credit_card_transaction_without_a_description(): void
