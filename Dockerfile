@@ -3,7 +3,7 @@ FROM webdevops/php-apache:8.2-alpine
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
 RUN apk add --update --no-cache oniguruma-dev libxml2-dev wget nano
-RUN docker-php-ext-install ctype fileinfo mbstring pdo calendar
+RUN docker-php-ext-install bcmath ctype fileinfo mbstring pdo calendar
 
 # Copy Composer binary from the Composer official Docker image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -20,7 +20,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --no-interaction --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
