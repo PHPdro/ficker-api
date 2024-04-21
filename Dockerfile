@@ -3,19 +3,7 @@ FROM webdevops/php-apache:8.2-alpine
 # Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
 RUN apk update && apk upgrade
 RUN apk add --update --no-cache oniguruma-dev libxml2-dev wget nano
-# RUN docker-php-ext-install ctype curl dom fileinfo filter hash mbstring openssl pcre pdo session tokenizer xml
-RUN docker-php-ext-install curl
-RUN docker-php-ext-install dom
-RUN docker-php-ext-install fileinfo
-RUN docker-php-ext-install filter
-RUN docker-php-ext-install hash
-RUN docker-php-ext-install mbstring 
-RUN docker-php-ext-install openssl
-RUN docker-php-ext-install pcre
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install session
-RUN docker-php-ext-install tokenizer
-RUN docker-php-ext-install xml
+RUN docker-php-ext-install ctype fileinfo mbstring pdo calendar
 
 # Copy Composer binary from the Composer official Docker image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
