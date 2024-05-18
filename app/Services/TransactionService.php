@@ -82,27 +82,27 @@ class TransactionService {
                 $transaction->category_description = $description;
             }
     
-            $most_expensive_transaction = Transaction::orderBy('transaction_value', 'desc')
-                ->where([
-                    'user_id'=> Auth::id(),
-                    'type_id' => 2])
-                ->first()->transaction_value;
+            // $most_expensive_transaction = Transaction::orderBy('transaction_value', 'desc')
+            //     ->where([
+            //         'user_id'=> Auth::id(),
+            //         'type_id' => 2])
+            //     ->first()->transaction_value;
     
-            $total_incomes = Transaction::where([
-                'user_id' => Auth::id(),
-                'type_id' => 1
-            ])->get();
+            // $total_incomes = Transaction::where([
+            //     'user_id' => Auth::id(),
+            //     'type_id' => 1
+            // ])->get();
     
-            $total_spendings = Transaction::where([
-                'user_id' => Auth::id(),
-                'type_id' => 2
-            ])->get();
+            // $total_spendings = Transaction::where([
+            //     'user_id' => Auth::id(),
+            //     'type_id' => 2
+            // ])->get();
     
             $response = [
                 'data' => [
-                    'total_incomes' => count($total_incomes),
-                    'total_spendings' => count($total_spendings),
-                    'most_expensive_transaction' => $most_expensive_transaction,
+                    // 'total_incomes' => count($total_incomes),
+                    // 'total_spendings' => count($total_spendings),
+                    // 'most_expensive_transaction' => $most_expensive_transaction,
                     'transactions' => $result
                 ]
             ];

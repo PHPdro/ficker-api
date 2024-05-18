@@ -44,6 +44,7 @@ class TransactionTest extends TestCase
 
     public function test_users_can_store_expenses(): void
     {
+        dd(Card::all());
         $response = $this->post('/api/transactions',[
             'category_id' => 1,
             'type_id' => 2,
@@ -88,7 +89,7 @@ class TransactionTest extends TestCase
 
     public function test_users_can_not_store_transactions_without_a_category(): void
     {
-        $response = $this->post('/api/transactions',[
+        $this->post('/api/transactions',[
             'type_id' => 1,
             'transaction_description' => 'Mc Donalds',
             'transaction_value' => 50.99,
@@ -99,7 +100,7 @@ class TransactionTest extends TestCase
         $this->assertEquals($error,'The category field is required.');
     }
 
-    public function test_users_can_not_store_transactions_without_the_new_category_description(): void
+    public function test_users_can_not_store_transactions_without_the_category_description(): void
     {
         $this->post('/api/transactions',[
             'category_id' => 0,
@@ -129,10 +130,8 @@ class TransactionTest extends TestCase
         $this->assertEquals($errors,'The type field is required.');
     }
 
-    public function test_users_can_not_store_a_credit_card_transaction_without_a_description(): void
-    {
-        
-        
+    public function test_users_can_not_store_transactions_without_a_description(): void
+    {   
         $this->post('/api/transactions',[
             'category_id' => 1,
             'type_id' => 2,
@@ -191,9 +190,6 @@ class TransactionTest extends TestCase
 
     public function test_users_can_not_store_a_credit_card_transaction_without_a_payment_method(): void
     {
-        
-        
-        
         $this->post('/api/transactions',[
             'category_id' => 1,
             'type_id' => 2,

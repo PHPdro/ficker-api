@@ -1,26 +1,28 @@
 services:
     laravel:
-      container_name: ficker_laravel
+      container_name: ficker_back
       image: ghcr.io/phpdro/ficker-api/ficker-back:latest
       ports:
         - 8080:80
       networks:
         - ficker
-      #volumes:
-        #- /home/phpdro/Documents/projects/ficker-api:/app
+      volumes:
+        - /home/phpdro/Documents/projects/ficker-api:/app
       environment:
         - APP_ENV=local
 
     # front:
     #   container_name: ficker_front
-    #   image: ficker-front:latest
+    #   build:
+    #     context: /home/phpdro/Documents/projects/ficker-front
+    #     dockerfile: /home/phpdro/Documents/projects/ficker-front/Dockerfile
     #   ports:
     #     - 80:3000
     #   networks:
     #     - ficker
 
     mysql:
-      container_name: ficker_mysql
+      container_name: ficker_db
       image: mysql:latest
       ports:
         - 3306:3306

@@ -9,21 +9,6 @@ use App\Models\Transaction;
 
 class InstallmentController extends Controller
 {
-    public function store($id): JsonResponse
-    {
-        $transaction = Transaction::find($id);
-
-        $data = [];
-        
-        for ($i = 1; $i <= $transaction->installments; $i++) {
-            Installment::create([
-                'transaction_id' => $id,
-                'card_id' => $transaction->card_id,
-                'installment_description' => $transaction->transaction_description.' '.$i.'/'.$transaction->installments,
-                'installment_value' => $transaction->transaction_value/$transaction->installments,
-            ]);
-        }
-    }
     
     public function show($id): JsonResponse
     {
