@@ -100,7 +100,7 @@ class CardController extends Controller
             return $invoice;
 
         } catch (\Exception $e) {
-            $errorMessage = "Erro: " + $e;
+            $errorMessage = $e;
             $response = [
                 "data" => [
                     "error" => $errorMessage
@@ -134,7 +134,7 @@ class CardController extends Controller
             ];
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            $errorMessage = "Erro: " + $e;
+            $errorMessage = $e;
             $response = [
                 "data" => [
                     "error" => $errorMessage
@@ -170,7 +170,7 @@ class CardController extends Controller
 
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            $errorMessage = "Erro: " + $e;
+            $errorMessage = $e;
             $response = [
                 "data" => [
                     "error" => $errorMessage
