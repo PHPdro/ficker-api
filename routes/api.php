@@ -31,9 +31,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('cards')->group(function () {
         Route::post('/', [CardController::class, 'store']);
-        Route::get('/', [CardController::class, 'showCards']);
-        Route::get('/{id}/invoice', [CardController::class, 'showCardInvoice']);
-        Route::get('/{id}/installments', [CardController::class, 'showInvoiceInstallments']); // Transações de um cartão no mês atual
+        Route::get('/{id}', [CardController::class, 'show']);
+        // Route::get('/{id}/invoice', [CardController::class, 'showCardInvoice']);
+        // Route::get('/{id}/installments', [CardController::class, 'showInvoiceInstallments']); // Transações de um cartão no mês atual
         Route::get('/flags', [CardController::class, 'showFlags']);
     });
 

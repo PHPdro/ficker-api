@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryService {
 
-    public function storeCategory(array $data): Category
+    public function storeCategory(array $data) 
     {
-        if(count($data) > 2) {
+        if(count($data) > 2) { # For categories created along with transactions
 
             $category = Category::create([
                 'user_id' => Auth::id(),
@@ -18,10 +18,19 @@ class CategoryService {
                 'type_id' => $data['type_id']
             ]);
 
+            return $category;
+
         } else {
             $category = Category::create($data);
+
+            $response = [
+                'data' => [
+                    'category' => $category
+                ]
+            ];
+            
+            return $response;
         }
-        return $category;
     }
 
     public function getCategories(array $data): array
@@ -44,7 +53,7 @@ class CategoryService {
                     ->where('category_id', $category->id)
                     ->sum('transaction_value');
 
-                $category->current_category_expenses = $category_expenses;
+                $category['current_category_expenses'] = $category_expenses;
             }
 
             $response = [

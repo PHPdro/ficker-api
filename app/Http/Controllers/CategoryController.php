@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Models\Category;
-use App\Models\Transaction;
-use Illuminate\Support\Facades\Auth;
 use App\Services\CategoryService;
 use App\Http\Requests\CategoryRequest;
 

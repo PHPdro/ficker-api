@@ -79,7 +79,7 @@ class TransactionService {
             foreach ($result as $transaction) {
     
                 $description = Category::find($transaction->category_id)->category_description;
-                $transaction->category_description = $description;
+                $transaction['category_description'] = $description;
             }
     
             // $most_expensive_transaction = Transaction::orderBy('transaction_value', 'desc')
