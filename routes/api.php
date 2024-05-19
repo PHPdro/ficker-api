@@ -37,14 +37,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/flags', [CardController::class, 'showFlags']);
     });
 
-    //Rotas dos gastos
-    Route::get('/spendings', [SpendingController::class, 'spendings']); // Saídas por ano, mês ou dia
-    Route::get('/spending', [SpendingController::class, 'showSpending']);
-    Route::post('/spendings', [SpendingController::class, 'store']);
-    Route::put('/spending/update/{id}', [SpendingController::class, 'update']);
+    // //Rotas dos gastos
+    // Route::get('/spendings', [SpendingController::class, 'spendings']); // Saídas por ano, mês ou dia
+    // Route::get('/spending', [SpendingController::class, 'showSpending']);
+    // Route::post('/spendings', [SpendingController::class, 'store']);
+    // Route::put('/spending/update/{id}', [SpendingController::class, 'update']);
 
-    //Rotas dos saldos
-    Route::get('/balance', [BalanceController::class, 'balance']); //Mostra o saldo atual;
+    // //Rotas dos saldos
+    // Route::get('/balance', [BalanceController::class, 'balance']); //Mostra o saldo atual;
 
     //Rotas dos métodos de pagamento (id e descrição)
     Route::get('/payment-methods', [PaymentController::class, 'showPaymentMethods']);
