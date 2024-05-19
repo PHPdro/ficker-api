@@ -17,18 +17,21 @@ class InvoiceService {
         $card_expiration = $card->card_expiration;
         $current_month= Carbon::now()->format('m');
 
+        // dd($card_closure, $card_expiration, $current_month);
+
         if ($current_month == "02" && $card_closure >= 29) {
             $current_invoice_closure = Carbon::now()->endOfMonth()->toDateString();
         } else {
             $current_invoice_closure = Carbon::now()->format('Y-m-'.$card_closure);
         }
 
+
         if ($transaction->date > $current_invoice_closure) {
             $invoice_closure = Carbon::parse($current_invoice_closure)->addMonth()->format('Y-m-'.$card_closure);
             $invoice_expiration = Carbon::parse($invoice_closure)->addMonth()->format('Y-m-'.$card_expiration);
         } else {
             $invoice_closure = $current_invoice_closure;
-            $invoice_expiration = Carbon::parse($invoice_closure)->addMonth()->format('Y-m-'.$card_expiration);
+            $invoice_expiration = Carbon::parse($invoice_closure)->addMonthWithNoOverflow()->format('Y-m-'.$card_expiration);
         }
 
         for ($i=1; $i <= $transaction->installments; $i++) {
@@ -58,8 +61,8 @@ class InvoiceService {
                 'invoice_id' => $invoice->id
             ]);
 
-            $invoice_closure = Carbon::parse($invoice_closure)->addMonth()->toDateString();
-            $invoice_expiration = Carbon::parse($invoice_expiration)->addMonth()->format('Y-m-'.$card_expiration);
+            $invoice_closure = Carbon::parse($invoice_closure)->addMonthNoOverflow()->toDateString();
+            $invoice_expiration = Carbon::parse($invoice_expiration)->addMonthNoOverflow()->format('Y-m-'.$card_expiration);
         }
     }
 }

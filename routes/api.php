@@ -5,8 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SpendingController;
-use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\PaymentController;
 
