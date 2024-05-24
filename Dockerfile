@@ -15,7 +15,7 @@ RUN docker-php-ext-install pdo
 # RUN docker-php-ext-install openssl
 # RUN docker-php-ext-install pcre
 RUN docker-php-ext-install session
-RUN docker-php-ext-install tokenizer
+# RUN docker-php-ext-install tokenizer
 RUN docker-php-ext-install xml
 
 # Copy Composer binary from the Composer official Docker image
