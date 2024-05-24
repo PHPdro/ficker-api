@@ -1,9 +1,9 @@
 FROM webdevops/php-apache:8.2-alpine
 
 RUN apk update && apk upgrade
-RUN apk add --update --no-cache oniguruma-dev libxml2-dev wget nano
+RUN apk add --update --no-cache oniguruma-dev libcurl libxml2-dev wget nano
 
-# Install Laravel framework system requirements (https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading)
+# Install Laravel framework system requirements (https://laravel.com/docs/11.x/deployment)
 RUN docker-php-ext-install ctype curl dom filter hash fileinfo mbstring pdo openssl pcre session tokenizer xml
 
 # Copy Composer binary from the Composer official Docker image
