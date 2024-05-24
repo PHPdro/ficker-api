@@ -12,7 +12,7 @@ RUN docker-php-ext-install filter
 RUN docker-php-ext-install fileinfo
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install pdo
-RUN docker-php-ext-install openssl
+# RUN docker-php-ext-install openssl
 RUN docker-php-ext-install pcre
 RUN docker-php-ext-install session
 RUN docker-php-ext-install tokenizer
