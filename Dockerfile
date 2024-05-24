@@ -8,7 +8,7 @@ RUN docker-php-ext-install ctype
 RUN docker-php-ext-install curl
 RUN docker-php-ext-install dom
 RUN docker-php-ext-install filter
-RUN docker-php-ext-install hash
+# RUN docker-php-ext-install hash
 RUN docker-php-ext-install fileinfo
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install pdo
